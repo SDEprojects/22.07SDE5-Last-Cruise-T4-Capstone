@@ -81,7 +81,7 @@ public class Controller {
         }
     }
 
-    public boolean getCommand() {
+    public boolean getCommand() throws InterruptedException {
         String[] command;
         String input;
 
@@ -109,7 +109,7 @@ public class Controller {
     }
 
 
-    public void processCommand(String[] command) {
+    public void processCommand(String[] command) throws InterruptedException {
         Commands c = Commands.valueOf(command[0].toUpperCase());
 
         switch (c) {
@@ -247,9 +247,10 @@ public class Controller {
                 break;
             }
             case SLEEP: {
-                game.playerSleep();
-                message = view.getSleeping();
-                break;
+                    game.playerSleep();
+                    message = view.getSleeping();
+                    Thread.sleep(4000);
+                    break;
             }
             case ESCAPE: {
                 if (game.getCurrentLocationItems().containsKey("raft")) {
@@ -273,7 +274,7 @@ public class Controller {
                 } else if (command[1].equals("down")) {
                     Music.decreaseMusic();
                     break;
-                } else if (command[1].equals("off") || command[1].equals("mute")) {
+                } else if (command[1].equals("off") || command[1].equals("mute") || command[1].equals("stop")) {
                     Music.muteMusic();
                     break;
                 } else if (command[1].equals("on") || command[1].equals("unmute")) {
