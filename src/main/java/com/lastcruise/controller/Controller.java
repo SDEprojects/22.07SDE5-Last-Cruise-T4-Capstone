@@ -300,13 +300,15 @@ public class Controller {
 
             // SAVING THE GAME
             case SAVE: {
-                try {
-                    gameLoader.saveGame(game);
-                    message = view.getGameSaved();
-                } catch (IOException e) {
-                    message = view.getGameSaveFailed();
+                if (command[1].equals("game")) {
+                    try {
+                        gameLoader.saveGame(game);
+                        message = view.getGameSaved();
+                    } catch (IOException e) {
+                        message = view.getGameSaveFailed();
+                    }
+                    break;
                 }
-                break;
             }
             default:
                 message = view.getInvalidCommandMessage();
@@ -337,6 +339,7 @@ public class Controller {
                 case VOLUME:
                 case MUSIC:
                 case SOUND:
+                case SAVE:
                     return command.length >= 2;
                 default:
                     return true;
