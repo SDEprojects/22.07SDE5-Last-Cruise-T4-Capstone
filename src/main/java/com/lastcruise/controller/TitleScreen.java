@@ -1,5 +1,8 @@
 package com.lastcruise.controller;
 
+import com.lastcruise.model.AllSounds;
+import com.lastcruise.model.Music;
+import com.lastcruise.view.View;
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -14,6 +17,9 @@ public class TitleScreen {
   private JButton startBtn;
   private JButton loadBtn;
   private JButton settingsBtn;
+  Music music = new Music();
+  Controller controller = new Controller();
+  View view = new View();
 
   public TitleScreen() {
     buildTitleScreen();
@@ -35,6 +41,7 @@ public class TitleScreen {
 
     startBtn = new JButton("Start");
     startBtn.setBounds(500, 575, 225, 75);
+    startBtn.addActionListener(e -> controller.gameSetUp());
 
     loadBtn = new JButton("Load Game");
     loadBtn.setBounds(825, 575, 225, 75);
@@ -46,6 +53,7 @@ public class TitleScreen {
     settingsBtn.setContentAreaFilled(false);
     settingsBtn.setBorderPainted(false);
     settingsBtn.setBorder(null);
+    settingsBtn.addActionListener(e -> new SettingsScreen());
 
     titleScreen.add(imgSection, Integer.valueOf(0));
     titleScreen.add(title, Integer.valueOf(2));
