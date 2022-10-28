@@ -15,18 +15,29 @@ public class Main {
 
   public static void main(String[] args) throws IOException, InterruptedException {
 
-    GUIController guiController = new GUIController();
 
-    Controller controller = new Controller();
-    boolean runGame = controller.gameSetUp();
+    GUIController guiController = new GUIController();
+      // controller instance
+      Controller controller = new Controller();
+      // create a variable that will run the game
+      boolean runGame = controller.gameSetUp();
+
+      // initiate music if continue
+      URL backgroundMusic = Main.class.getResource(AllSounds.ALL_SOUNDS.get("main"));
+      Music.runAudio(backgroundMusic);
 
     URL backgroundMusic = Main.class.getResource(AllSounds.ALL_SOUNDS.get("main"));
     Music.runAudio(backgroundMusic);
+
 
     while (runGame) {
       runGame = controller.getCommand();
       controller.updateView();
     }
+
+      // mute music once user exit's while loop (wins the game)
+      Music.muteMusic();
+
 
     Music.muteMusic();
 
