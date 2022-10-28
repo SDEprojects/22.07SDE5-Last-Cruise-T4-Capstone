@@ -11,6 +11,7 @@ import java.util.List;
     use = Id.NAME,
     include = As.PROPERTY,
     property = "type")
+// game locations have types that correspond with the below classes. Beach is the only location with type crafting
 @JsonSubTypes({
     @Type(value = CraftingLocation.class, name = "crafting"),
     @Type(value = GameLocation.class, name = "normal")

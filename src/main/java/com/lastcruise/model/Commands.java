@@ -1,5 +1,6 @@
 package com.lastcruise.model;
 
+// All possible game commands with synonyms, controlled in Controller Class
 public enum Commands {
     GO,
     HELP,

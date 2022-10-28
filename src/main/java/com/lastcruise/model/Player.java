@@ -2,8 +2,10 @@ package com.lastcruise.model;
 
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 
+// player is an extension of GameCharacter, which comes with name and inventory
 public class Player extends GameCharacter {
 
+    // player stamina is initially 100
     private int stamina = 100;
 
     public Player() {

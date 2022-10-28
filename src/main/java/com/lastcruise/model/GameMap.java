@@ -12,7 +12,7 @@ import java.util.Map;
 @JsonPropertyOrder({"locations", "currentLocationName"})
 public class GameMap {
 
-  // list of locations
+  // list of locations in a hashmap
   private Map<String, GameLocation> locations;
   @JsonIgnore
   private GameLocation currentLocation;
