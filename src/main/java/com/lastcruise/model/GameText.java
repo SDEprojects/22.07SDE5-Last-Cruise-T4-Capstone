@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.util.Map;
 
+
+// JSON PARSER
 public class GameText {
 
   Map<String, String> gameText;
