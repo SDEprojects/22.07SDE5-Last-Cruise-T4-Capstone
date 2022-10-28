@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Inventory {
 
+  // Player Inventory
   private final Map <String, Item> inventory;
 
   public Inventory() {

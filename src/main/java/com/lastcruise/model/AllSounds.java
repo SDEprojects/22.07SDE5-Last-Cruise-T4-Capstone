@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+// grabs file paths for sound audio files in json, parsing by Jackson
 public class AllSounds {
 
     public static final Map<String, String> ALL_SOUNDS = generateSounds();

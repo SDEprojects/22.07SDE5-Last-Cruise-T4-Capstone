@@ -82,6 +82,7 @@ public class Game {
             gameMap.updateCurrentLocation(direction);
     }
 
+    // method to transfer item from map inventory to player inventory
     public void transferItemFromTo(Inventory from, Inventory to, String itemName)
         throws InventoryEmptyException, NoEnoughStaminaException {
         if(!GameItems.GAME_ITEMS_HASHMAP.containsKey(itemName)){
