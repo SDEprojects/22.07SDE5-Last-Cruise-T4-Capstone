@@ -17,9 +17,11 @@ public class TitleScreen {
   private JButton startBtn;
   private JButton loadBtn;
   private JButton settingsBtn;
+
   Music music = new Music();
   Controller controller = new Controller();
   View view = new View();
+
 
   public TitleScreen() {
     buildTitleScreen();
@@ -41,7 +43,7 @@ public class TitleScreen {
 
     startBtn = new JButton("Start");
     startBtn.setBounds(500, 575, 225, 75);
-    startBtn.addActionListener(e -> controller.gameSetUp());
+//    startBtn.addActionListener(e -> new GameScreen());
 
     loadBtn = new JButton("Load Game");
     loadBtn.setBounds(825, 575, 225, 75);
@@ -61,6 +63,7 @@ public class TitleScreen {
     titleScreen.add(loadBtn, Integer.valueOf(2));
     titleScreen.add(settingsBtn, Integer.valueOf(2));
   }
+
 
   public JLayeredPane getTitleScreen() {
     return titleScreen;
