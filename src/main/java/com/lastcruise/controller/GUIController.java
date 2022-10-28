@@ -1,6 +1,7 @@
 package com.lastcruise.controller;
 
 import java.awt.Dimension;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,7 +17,13 @@ public class GUIController {
     mainFrame = new JFrame("The Last Cruise");
     mainFrame.setPreferredSize(new Dimension(1500, 800));
     mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    mainFrame.setResizable(false);
+
+    ImageIcon image = new ImageIcon(getClass().getClassLoader().getResource("images/logo.jpg"));
+    mainFrame.setIconImage(image.getImage());
+
     loadTitleScreen();
+
   }
 
   private void loadTitleScreen() {
