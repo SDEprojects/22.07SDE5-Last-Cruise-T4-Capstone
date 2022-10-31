@@ -12,20 +12,24 @@ public class View {
         GAME_TEXT = gameText.getGameText();
     }
 
-    public void printGameBanner() {
-        System.out.println(Colors.GREEN + GAME_TEXT.get("Banner") + Colors.RESET);
+//    public void printGameBannerConsole() {
+//        System.out.println(Colors.GREEN + GAME_TEXT.get("Banner") + Colors.RESET);
+//    }
+
+    public String printGameBanner() {
+       return GAME_TEXT.get("Banner");
     }
 
-    public void printStory() {
-        System.out.println(GAME_TEXT.get("Intro"));
+    public String printStory() {
+        return GAME_TEXT.get("Intro");
     }
 
     public void printHelpCommands() {
         System.out.println(Colors.BLUE + GAME_TEXT.get("Help") + Colors.RESET);
     }
 
-    public void printInstructions() {
-        System.out.println(GAME_TEXT.get("Instructions"));
+    public String printInstructions() {
+        return GAME_TEXT.get("Instructions");
     }
 
     public void printStoryIntro(String name) {
@@ -36,8 +40,8 @@ public class View {
         System.out.print(GAME_TEXT.get("NamePrompt"));
     }
 
-    public void printStartGamePrompt() {
-        System.out.print(GAME_TEXT.get("StartGamePrompt"));
+    public String printStartGamePrompt() {
+        return GAME_TEXT.get("StartGamePrompt");
     }
 
     public void printStatusBanner(String location, String stamina, String inventory,

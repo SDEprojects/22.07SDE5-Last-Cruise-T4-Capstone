@@ -14,10 +14,15 @@ import com.lastcruise.model.Player.NoEnoughStaminaException;
 import com.lastcruise.model.PuzzleClient;
 import com.lastcruise.model.SoundEffect;
 import com.lastcruise.view.View;
+import java.awt.TextArea;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import org.w3c.dom.Text;
 
 
 public class Controller {
@@ -31,43 +36,62 @@ public class Controller {
     private boolean keepPlaying = true;
     private final GameLoader gameLoader = new GameLoader();
 
-    public boolean gameSetUp() {
-        String input;
-        boolean start = false;
-        view.printGameBanner();
-        view.printStory();
-        view.printInstructions();
+    public boolean gameSetUp() throws InterruptedException {
+        MainScreen gameScreen = new MainScreen();
+        TextArea dialogTa = gameScreen.getDialogTa();
+        dialogTa.setText(view.printGameBanner());
 
-        try {
-            view.printStartGamePrompt();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            input = reader.readLine().trim();
-            if (input.equals("yes")) {
-                start = true;
-                getPlayerName();
-                view.printStoryIntro(name);
-                game = new Game(name);
-                System.out.println("enter any key to continue");
-                String continueStory = reader.readLine().trim();
-                updateView();
-            } else if (input.equals("load")) {
-                start = true;
+//        String story = view.printStory();
+        dialogTa.append(view.printStory());
 
-                try {
-                    game = gameLoader.loadGame();
-                } catch (Exception e) {
-                    view.printCantLoadGame();
-                    getPlayerName();
-                    view.printHelpCommands();
-                    game = new Game(name);
-                } finally {
-                    updateView();
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return start;
+//        String[] storyArr = story.split("");
+//        for(String s: storyArr) {
+//            dialogTa.append(s);
+//            Thread.sleep(50);
+//        }
+        dialogTa.append(view.printInstructions());
+//
+        dialogTa.append(view.printStartGamePrompt());
+
+
+
+//        String input;
+//        boolean start = false;
+//        view.printGameBanner();
+//        view.printStory();
+//        view.printInstructions();
+//
+//        try {
+//            view.printStartGamePrompt();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//            input = reader.readLine().trim();
+//            if (input.equals("yes")) {
+//                start = true;
+//                getPlayerName();
+//                view.printStoryIntro(name);
+//                game = new Game(name);
+//                System.out.println("enter any key to continue");
+//                String continueStory = reader.readLine().trim();
+//                updateView();
+//            } else if (input.equals("load")) {
+//                start = true;
+//
+//                try {
+//                    game = gameLoader.loadGame();
+//                } catch (Exception e) {
+//                    view.printCantLoadGame();
+//                    getPlayerName();
+//                    view.printHelpCommands();
+//                    game = new Game(name);
+//                } finally {
+//                    updateView();
+//                }
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return start;
+        return true;
     }
 
     public void getPlayerName() {
