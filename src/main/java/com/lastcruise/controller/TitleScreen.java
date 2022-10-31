@@ -43,7 +43,16 @@ public class TitleScreen {
 
     startBtn = new JButton("Start");
     startBtn.setBounds(500, 575, 225, 75);
+    startBtn.addActionListener(e -> {
+      try {
+        controller.gameSetUp();
+      } catch (InterruptedException ex) {
+        throw new RuntimeException(ex);
+      }
+    });
+
 //    startBtn.addActionListener(e -> new GameScreen());
+
 
     loadBtn = new JButton("Load Game");
     loadBtn.setBounds(825, 575, 225, 75);

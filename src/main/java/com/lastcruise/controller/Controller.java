@@ -14,68 +14,86 @@ import com.lastcruise.model.Player.NoEnoughStaminaException;
 import com.lastcruise.model.PuzzleClient;
 import com.lastcruise.model.SoundEffect;
 import com.lastcruise.view.View;
+import java.awt.TextArea;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import org.w3c.dom.Text;
 
-// runs the game & handles game input using a buffered reader
+
 public class Controller {
 
     private final View view = new View();
+
     PuzzleClient puzzleClient = new PuzzleClient();
     private String name;
     private Game game;
     private String message = "";
-    // boolean that runs the game
     private boolean keepPlaying = true;
-    // For saving and loading the game
     private final GameLoader gameLoader = new GameLoader();
 
-    // Show user opening scenes, asks if user wants to play or load saved game, creates instance of Game
-    public boolean gameSetUp() {
-        String input;
-        boolean start = false;
+    public boolean gameSetUp() throws InterruptedException {
+        MainScreen gameScreen = new MainScreen();
+        TextArea dialogTa = gameScreen.getDialogTa();
+        dialogTa.setText(view.printGameBanner());
 
-        // beginning scenes from the game (text)
-        view.printGameBanner();
-        view.printStory();
-        view.printInstructions();
+//        String story = view.printStory();
+        dialogTa.append(view.printStory());
 
-        try {
-            view.printStartGamePrompt();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            input = reader.readLine().trim();
-            if (input.equals("yes")) {
-                // this allows the game to enter into the while loop in the main method if user would like to play
-                start = true;
-                getPlayerName();
-                view.printStoryIntro(name);
-                game = new Game(name);
-                System.out.println("enter any key to continue");
-                String continueStory = reader.readLine().trim();
-                updateView();
-            } else if (input.equals("load")) {
-                start = true;
+//        String[] storyArr = story.split("");
+//        for(String s: storyArr) {
+//            dialogTa.append(s);
+//            Thread.sleep(50);
+//        }
+        dialogTa.append(view.printInstructions());
+//
+        dialogTa.append(view.printStartGamePrompt());
 
-                try {
-                    game = gameLoader.loadGame();
-                } catch (Exception e) {
-                    // if no saved game, run new game
-                    view.printCantLoadGame();
-                    getPlayerName();
-                    view.printHelpCommands();
-                    game = new Game(name);
-                } finally {
-                    updateView();
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        // if neither yes nor load, return false
-        return start;
+
+
+//        String input;
+//        boolean start = false;
+//        view.printGameBanner();
+//        view.printStory();
+//        view.printInstructions();
+//
+//        try {
+//            view.printStartGamePrompt();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//            input = reader.readLine().trim();
+//            if (input.equals("yes")) {
+//                start = true;
+//                getPlayerName();
+//                view.printStoryIntro(name);
+//                game = new Game(name);
+//                System.out.println("enter any key to continue");
+//                String continueStory = reader.readLine().trim();
+//                updateView();
+//            } else if (input.equals("load")) {
+//                start = true;
+//
+//                try {
+//                    game = gameLoader.loadGame();
+//                } catch (Exception e) {
+//                    view.printCantLoadGame();
+//                    getPlayerName();
+//                    view.printHelpCommands();
+//                    game = new Game(name);
+//                } finally {
+//                    updateView();
+//                }
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return start;
+        return true;
     }
+
     public void getPlayerName() {
         try {
             view.printNamePrompt();
@@ -95,7 +113,6 @@ public class Controller {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             input = reader.readLine().toLowerCase().trim();
             command = input.split("\\s+");
-            // if the user types pick up in two words instead of 1, change it to one and reposition the item index to 1
             if (command[0].equals("pick") && command[1].equals("up")) {
                 command[0] = "pickup";
                 command[1] = command[2];
@@ -124,7 +141,7 @@ public class Controller {
             case GO: {
                 try {
                     game.moveLocation(command);
-                    // Pit method when player enters pit
+
                     if (game.getCurrentLocationName().equals("PIT")) {
 
                         URL fallSoundUrl = getClass().getResource(
@@ -137,10 +154,8 @@ public class Controller {
                         message = view.puzzleMessagePrompt();
                         updateView();
 
-                        // if user answers puzzle correctly
                         if (puzzleClient.puzzleGenerator()) {
                             message = view.solvedPuzzleMessage();
-                        // if user answers puzzle incorrectly
                         } else {
                             message = view.unSolvedPuzzleMessage();
                             updateView();
@@ -181,9 +196,7 @@ public class Controller {
             case PICKUP:
             case TAKE:
             case GRAB: {
-                // take the inventory for the location
                 var currentLocationInventory = game.getCurrentLocationInventory();
-//                take the inventory for the player
                 var playerInventory = game.getPlayerInventory();
                 // GRABBING LOG
                 if (command[1].equals("log") && !playerInventory.getInventory()
@@ -191,7 +204,6 @@ public class Controller {
                     message = view.cantGrabItem();
                 } else {
                     try {
-                        // exchange items between hashmaps and remove from the location hashmap (no duplicates)
                         game.transferItemFromTo(currentLocationInventory, playerInventory,
                             command[1]);
                         URL grabSoundUrl = getClass().getResource(
@@ -228,7 +240,7 @@ public class Controller {
             case CRAFT: {
                 if (command[1].equals("raft")) {
                     if (game.getCurrentLocation() instanceof CraftingLocation) {
-                        // Craft raft
+                        //Craft raft
                         if (game.craftRaft()) {
                             message = view.getSuccessfulRaftBuildMessage();
 
@@ -267,7 +279,6 @@ public class Controller {
             case ESCAPE: {
                 if (game.getCurrentLocationItems().containsKey("raft")) {
                     message = view.getYouWonMessage();
-                    // ends the while loop in Main, user wins the game
                     keepPlaying = false;
                 } else {
                     message = view.getCantEscape();
@@ -366,7 +377,7 @@ public class Controller {
         Thread.sleep(3000);
     }
 
-    // Clears console view and shows current stats
+
     public void updateView() {
         view.clearConsole();
         String location = game.getCurrentLocationName();
