@@ -17,10 +17,11 @@ public class PuzzleClient {
   public PuzzleClient() {
     Puzzle puzzle = new Puzzle();
     PUZZLE_TEXT = puzzle.getPuzzleText();
+    // set random number to number of available puzzles
     MAX = PUZZLE_TEXT.size();
   }
 
-
+  // generates a random puzzle
   public boolean puzzleGenerator(){
     Random r =  new Random();
     boolean correctAnswer;
@@ -36,7 +37,8 @@ public class PuzzleClient {
     Scanner playerResponse = new Scanner(System.in);
     System.out.print("Type your response here: ");
     String answer = playerResponse.nextLine().toUpperCase().trim();
-    correctAnswer = answer.equalsIgnoreCase(answerWord) ||answer.equalsIgnoreCase( answerLetter);
+    // user can respond with the word or the letter for the answer, if it is correct, correctAnswer is true, if not, it is false
+    correctAnswer = answer.equalsIgnoreCase(answerWord) || answer.equalsIgnoreCase( answerLetter);
     System.out.println(correctAnswer);
 
     return correctAnswer;
