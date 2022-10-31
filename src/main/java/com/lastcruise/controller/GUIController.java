@@ -1,5 +1,6 @@
 package com.lastcruise.controller;
 
+import com.lastcruise.view.View;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,8 @@ public class GUIController implements ActionListener {
   private JFrame mainFrame;
   private final TitleScreen titleScreen = new TitleScreen();
   private GameScreen game = new GameScreen();
+
+  static View view = new View();
 
   public GUIController() {
     mainFrame = new JFrame("The Last Cruise");
@@ -39,6 +42,11 @@ public class GUIController implements ActionListener {
     titleScreen.getStartBtn().addActionListener(this);
   }
 
+  private void setGameText(String message) {
+    game.getDialogueTextArea().setText(message);
+  }
+
+
   public JFrame getMainFrame() {
     return mainFrame;
   }
@@ -48,8 +56,9 @@ public class GUIController implements ActionListener {
   }
 
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     GUIController gui = new GUIController();
+    gui.setGameText(view.printStory());
   }
 
   @Override

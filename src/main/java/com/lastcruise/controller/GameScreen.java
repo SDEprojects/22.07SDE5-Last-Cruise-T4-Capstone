@@ -1,14 +1,19 @@
 package com.lastcruise.controller;
 
+import com.lastcruise.view.View;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.TextArea;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class GameScreen {
 
@@ -16,6 +21,12 @@ public class GameScreen {
   JLabel dialoguePanelText, dialogueText;
   JLayeredPane dialoguePanel;
   JFrame frame;
+  ImageIcon bgImg;
+
+  JTextArea dialogueTextArea;
+  JScrollPane text;
+
+  View view = new View();
 
   public GameScreen() {
     buildGameScreen();
@@ -42,26 +53,50 @@ public class GameScreen {
     // Create initial layered pane to display text on top of the scroll image
     dialoguePanel = new JLayeredPane();
     dialoguePanel.setBounds(10, 505, 1150, 275);
+//    dialoguePanel.setBackground(Color.magenta);
 
     // Create container/ panel to hold scroll img
     dialogueImgPanel = new JPanel();
     dialogueImgPanel.setBounds(10, 50, 1150, 275);
+
+//    dialoguePanel.add(dialogueImgPanel, Integer.valueOf(0));
 
     // Add image to the img panel, set z-index to 0 "bottom"
     dialogueImgPanel.add(dialogueImg);
     dialoguePanel.add(dialogueImgPanel, Integer.valueOf(0));
 
     // Create new panel to hold text on top of scroll img
-    dialogueTextPanel = new JPanel();
-    dialogueTextPanel.setOpaque(false);
-    dialogueTextPanel.setBounds(15, 50, 900, 125);
+//    dialogueTextPanel = new JPanel();
+//    dialogueTextPanel.setOpaque(false);
+//    dialogueTextPanel.setBounds(15, 50, 900, 125);
+//    dialogueTextPanel.setBorder(BorderFactory.createLineBorder(Color.black, 5));
+
+    dialogueTextArea = new JTextArea();
+    dialogueTextArea.setBounds(65,65,1103,175);
+//    dialogueTextArea.setOpaque(false);
+//    dialogueTextArea.setText(view.printStory());
+    dialogueTextArea.setOpaque(false);
+    dialogueTextArea.setEditable(false);
+    dialogueTextArea.setLineWrap(true);
+//    dialogueTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+    dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
+
+
+//    text = new JScrollPane(dialogueTextArea);
+//    text.setBounds(15,50,900,125);
+////    text.getViewport().setOpaque(false);
+////    text.setOpaque(false);
+////    dialogueTextArea.add(text);
+//    dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
+
 
     // Create label to actually hold text content
-    dialogueText = new JLabel("Hello world");
-    // Add text label to text panel/ container
-    dialogueTextPanel.add(dialogueText);
-    // Add text container to dialogue img panel, set z-index to 1 to sit above scroll img
-    dialoguePanel.add(dialogueTextPanel, Integer.valueOf(1));
+//    dialogueText = new JLabel("Hello world");
+//    dialogueText.setBorder(BorderFactory.createLineBorder(Color.black, 4));
+//    // Add text label to text panel/ container
+//    dialogueTextPanel.add(dialogueText);
+//    // Add text container to dialogue img panel, set z-index to 1 to sit above scroll img
+//    dialoguePanel.add(dialogueTextPanel, Integer.valueOf(1));
 
     // Adding dialogue container to mainGamePanel
     mainGamePanel.add(dialoguePanel);
@@ -77,19 +112,35 @@ public class GameScreen {
     ImageIcon img3 = new ImageIcon(getClass().getClassLoader().getResource("images/mushroom.png"));
     ImageIcon img4 = new ImageIcon(getClass().getClassLoader().getResource("images/berries.png"));
 
-    JLabel img1Label = new JLabel(img1);
-    JLabel img2Label = new JLabel(img2);
-    JLabel img3Label = new JLabel(img3);
-    JLabel img4Label = new JLabel(img4);
-    itemsPanel.add(img1Label);
-    itemsPanel.add(img2Label);
-    itemsPanel.add(img3Label);
-    itemsPanel.add(img4Label);
+    JButton btn1 = new JButton(img1);
+    btn1.setOpaque(false);
+    btn1.setContentAreaFilled(false);
+    btn1.setBorderPainted(false);
+
+    JButton btn2 = new JButton(img2);
+    btn2.setOpaque(false);
+    btn2.setContentAreaFilled(false);
+    btn2.setBorderPainted(false);
+
+    JButton btn3 = new JButton(img3);
+    btn3.setOpaque(false);
+    btn3.setContentAreaFilled(false);
+    btn3.setBorderPainted(false);
+
+    JButton btn4 = new JButton(img4);
+    btn4.setOpaque(false);
+    btn4.setContentAreaFilled(false);
+    btn4.setBorderPainted(false);
+
+//    itemsPanel.add(btn1);
+//    itemsPanel.add(btn2);
+//    itemsPanel.add(btn3);
+//    itemsPanel.add(btn4);
 
     // add location items to main panel
     mainGamePanel.add(itemsPanel);
 
-    ImageIcon bgImg = new ImageIcon(getClass().getClassLoader().getResource("images/jungle1.jpg"));
+    bgImg = new ImageIcon(getClass().getClassLoader().getResource("images/beach1.jpg"));
     Image image = bgImg.getImage();
     Image newBgImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
     bgImg = new ImageIcon(newBgImg);
@@ -126,23 +177,70 @@ public class GameScreen {
     ImageIcon img9 = new ImageIcon(getClass().getClassLoader().getResource("images/pipe.png"));
     ImageIcon img10 = new ImageIcon(getClass().getClassLoader().getResource("images/rope.png"));
 
-    JLabel img5Label = new JLabel(img5);
-    JLabel img6Label = new JLabel(img6);
-    JLabel img7Label = new JLabel(img7);
-    JLabel img8Label = new JLabel(img8);
-    JLabel img9Label = new JLabel(img9);
-    JLabel img10Label = new JLabel(img10);
+    JButton btn5 = new JButton(img5);
+    btn5.setOpaque(false);
+    btn5.setContentAreaFilled(false);
+    btn5.setBorderPainted(false);
 
-    inventoryPanel.add(img5Label);
-    inventoryPanel.add(img6Label);
-    inventoryPanel.add(img7Label);
-    inventoryPanel.add(img8Label);
-    inventoryPanel.add(img9Label);
-    inventoryPanel.add(img10Label);
+    JButton btn6 = new JButton(img6);
+    btn6.setOpaque(false);
+    btn6.setContentAreaFilled(false);
+    btn6.setBorderPainted(false);
+
+    JButton btn7 = new JButton(img7);
+    btn7.setOpaque(false);
+    btn7.setContentAreaFilled(false);
+    btn7.setBorderPainted(false);
+
+    JButton btn8 = new JButton(img8);
+    btn8.setOpaque(false);
+    btn8.setContentAreaFilled(false);
+    btn8.setBorderPainted(false);
+
+    JButton btn9 = new JButton(img9);
+    btn9.setOpaque(false);
+    btn9.setContentAreaFilled(false);
+    btn9.setBorderPainted(false);
+
+    JButton btn10 = new JButton(img10);
+    btn10.setOpaque(false);
+    btn10.setContentAreaFilled(false);
+    btn10.setBorderPainted(false);
+
+//
+//    JLabel img5Label = new JLabel(img5);
+//    JLabel img6Label = new JLabel(img6);
+//    JLabel img7Label = new JLabel(img7);
+//    JLabel img8Label = new JLabel(img8);
+//    JLabel img9Label = new JLabel(img9);
+//    JLabel img10Label = new JLabel(img10);
+//
+    inventoryPanel.add(btn1);
+    inventoryPanel.add(btn2);
+    inventoryPanel.add(btn3);
+    inventoryPanel.add(btn4);
+    inventoryPanel.add(btn5);
+    inventoryPanel.add(btn6);
+    inventoryPanel.add(btn7);
+    inventoryPanel.add(btn8);
+    inventoryPanel.add(btn9);
+    inventoryPanel.add(btn10);
 
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
 
+  }
+
+  public JTextArea getDialogueTextArea() {
+    return dialogueTextArea;
+  }
+
+  public ImageIcon getBgImg() {
+    return bgImg;
+  }
+
+  public void setBgImg(ImageIcon bgImg) {
+    this.bgImg = bgImg;
   }
 
   public JFrame getFrame() {

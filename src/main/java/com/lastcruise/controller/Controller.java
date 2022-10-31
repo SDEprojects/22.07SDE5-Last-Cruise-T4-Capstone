@@ -22,6 +22,7 @@ import java.net.URL;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import org.w3c.dom.Text;
 
 
@@ -30,16 +31,19 @@ public class Controller {
     private final View view = new View();
 
     PuzzleClient puzzleClient = new PuzzleClient();
+
     private String name;
     private Game game;
     private String message = "";
     private boolean keepPlaying = true;
     private final GameLoader gameLoader = new GameLoader();
 
+
     public boolean gameSetUp() throws InterruptedException {
         MainScreen gameScreen = new MainScreen();
         TextArea dialogTa = gameScreen.getDialogTa();
         dialogTa.setText(view.printGameBanner());
+
 
 //        String story = view.printStory();
         dialogTa.append(view.printStory());
@@ -52,8 +56,6 @@ public class Controller {
         dialogTa.append(view.printInstructions());
 //
         dialogTa.append(view.printStartGamePrompt());
-
-
 
 //        String input;
 //        boolean start = false;
