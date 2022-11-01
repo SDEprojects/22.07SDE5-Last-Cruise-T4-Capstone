@@ -34,6 +34,7 @@ public class SettingsScreen {
 
     dialog.setSize(300, 100);
 
+    dialog.setLocationRelativeTo(null);
     dialog.setVisible(true);
 
 

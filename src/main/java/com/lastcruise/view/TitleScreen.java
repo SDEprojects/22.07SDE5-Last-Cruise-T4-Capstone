@@ -4,6 +4,7 @@ import com.lastcruise.controller.Controller;
 import com.lastcruise.model.AllSounds;
 import com.lastcruise.model.Music;
 import com.lastcruise.view.View;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -22,6 +23,7 @@ public class TitleScreen {
   private JButton startBtn;
   private JButton loadBtn;
   private JButton settingsBtn;
+  private JButton exitButton;
 
   Music music = new Music();
   Controller controller = new Controller();
@@ -48,6 +50,7 @@ public class TitleScreen {
 
     startBtn = new JButton("New Game");
     startBtn.setBounds(500, 575, 225, 75);
+    startBtn.setFont(new Font("Monospace", Font.PLAIN, 20));
 //    startBtn.addActionListener(e -> {
 //      try {
 //        controller.gameSetUp();
@@ -61,21 +64,28 @@ public class TitleScreen {
 
     loadBtn = new JButton("Load Game");
     loadBtn.setBounds(825, 575, 225, 75);
+    loadBtn.setFont(new Font("Monospace", Font.PLAIN, 20));
+
+    exitButton = new JButton("Exit");
+    exitButton.setBounds(724,675,100,50);
+    exitButton.addActionListener(e -> System.exit(0));
+    exitButton.setFont(new Font("Monospace", Font.PLAIN, 15));
 
     ImageIcon settings = new ImageIcon(getClass().getClassLoader().getResource("images/settings.png"));
     settingsBtn = new JButton(settings);
-    settingsBtn.setBounds(1400, 15, 100, 100);
+    settingsBtn.setBounds(1400, 15, 65, 65);
     settingsBtn.setOpaque(false);
+    settingsBtn.setFocusPainted(false);
     settingsBtn.setContentAreaFilled(false);
     settingsBtn.setBorderPainted(false);
     settingsBtn.setBorder(null);
-//    settingsBtn.addActionListener(e -> new SettingsScreen());
-    settingsBtn.addActionListener(e -> System.exit(0));
+    settingsBtn.addActionListener(e -> new SettingsScreen());
 
     titleScreen.add(imgSection, Integer.valueOf(0));
     titleScreen.add(title, Integer.valueOf(2));
     titleScreen.add(startBtn, Integer.valueOf(2));
     titleScreen.add(loadBtn, Integer.valueOf(2));
+    titleScreen.add(exitButton, Integer.valueOf(2));
     titleScreen.add(settingsBtn, Integer.valueOf(2));
   }
 
