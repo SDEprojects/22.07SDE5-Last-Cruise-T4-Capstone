@@ -47,8 +47,7 @@ public class GUIController {
     mainFrame.setLocationRelativeTo(null);
     mainFrame.setVisible(true);
     // start game action listener
-    titleScreen.getStartBtn().addActionListener(e -> {
-      continueToGame();
+    titleScreen.getStartBtn().addActionListener(e -> {continueToGame();
     });
   }
 
@@ -60,6 +59,7 @@ public class GUIController {
     mainFrame.setVisible(true);
     // TODO: Add scrolling text effect to printSTory in interlude screen
     intermission.changeText(view.printStory());
+
     intermission.getContinueBtn().addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -91,5 +91,4 @@ public class GUIController {
 //    game.getDialogueTextArea().setText(view.printStory());
 //    gui.setGameText(view.printStory());
   }
-
 }
