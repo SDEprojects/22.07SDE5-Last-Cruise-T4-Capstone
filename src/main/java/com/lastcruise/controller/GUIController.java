@@ -1,22 +1,24 @@
 package com.lastcruise.controller;
 
+import com.lastcruise.view.GameScreen;
+import com.lastcruise.view.PreludeScreen;
+import com.lastcruise.view.TitleScreen;
 import com.lastcruise.view.View;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class GUIController implements ActionListener {
+public class GUIController {
 
   private JFrame mainFrame;
   private final TitleScreen titleScreen = new TitleScreen();
+  private PreludeScreen intermission = new PreludeScreen();
+  // Use callback instead of static methods
   private GameScreen game = new GameScreen();
-
   static View view = new View();
 
   public GUIController() {
@@ -29,7 +31,12 @@ public class GUIController implements ActionListener {
     mainFrame.setIconImage(image.getImage());
 
     loadTitleScreen();
-
+//    continueToGame();
+    // This is a high level event listener, envoked by View to perform an action
+//    game.setActionCallback((action) -> {
+//      // would invoke process command in controller
+//      // TODO: Handle action
+//    });
   }
 
   private void loadTitleScreen() {
@@ -39,13 +46,37 @@ public class GUIController implements ActionListener {
     // Set location to null after 'pack()'
     mainFrame.setLocationRelativeTo(null);
     mainFrame.setVisible(true);
-    titleScreen.getStartBtn().addActionListener(this);
+    // start game action listener
+    titleScreen.getStartBtn().addActionListener(e -> {
+      continueToGame();
+    });
+  }
+
+  private void continueToGame() {
+    titleScreen.getTitleScreen().setVisible(false);
+    JPanel prelude = intermission.getMainPanel();
+    mainFrame.add(prelude);
+    mainFrame.pack();
+    mainFrame.setVisible(true);
+    // TODO: Add scrolling text effect to printSTory in interlude screen
+    intermission.changeText(view.printStory());
+    intermission.getContinueBtn().addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // sets prelude panel to false
+        intermission.getMainPanel().setVisible(false);
+        JPanel gamePanel = game.getMainGamePanel();
+        // loads up game panel
+        mainFrame.add(gamePanel);
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+      }
+    });
   }
 
   private void setGameText(String message) {
     game.getDialogueTextArea().setText(message);
   }
-
 
   public JFrame getMainFrame() {
     return mainFrame;
@@ -55,18 +86,10 @@ public class GUIController implements ActionListener {
     return titleScreen;
   }
 
-
   public static void main(String[] args) throws InterruptedException {
     GUIController gui = new GUIController();
-    gui.setGameText(view.printStory());
+//    game.getDialogueTextArea().setText(view.printStory());
+//    gui.setGameText(view.printStory());
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    titleScreen.getTitleScreen().setVisible(false);
-    JPanel gamePanel = game.getMainGamePanel();
-    mainFrame.add(gamePanel);
-    mainFrame.pack();
-    mainFrame.setVisible(true);
-  }
 }

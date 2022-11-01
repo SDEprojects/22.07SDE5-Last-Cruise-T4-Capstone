@@ -1,28 +1,21 @@
 package com.lastcruise;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lastcruise.controller.Controller;
 import com.lastcruise.controller.GUIController;
-import com.lastcruise.controller.MainScreen;
-import com.lastcruise.model.AllSounds;
-import com.lastcruise.model.Music;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Map;
 
 public class Main {
 
   public static void main(String[] args) throws IOException, InterruptedException {
 
-    GUIController guiController = new GUIController();
+      Controller controller = new Controller();
+      // creates guiController instance in Controller, Prompts the user to start game or quit
+      controller.gameSetUp();
 
-    Controller controller = new Controller();
-//    boolean runGame = controller.gameSetUp();
-//
-//    URL backgroundMusic = Main.class.getResource(AllSounds.ALL_SOUNDS.get("main"));
-//    Music.runAudio(backgroundMusic);
+      boolean runGame = true;
+      // TODO: Goal to enter while loop and not change too much logic here
+//      URL backgroundMusic = Main.class.getResource(AllSounds.ALL_SOUNDS.get("main"));
+//      Music.runAudio(backgroundMusic);
 //
 //    while (runGame) {
 //      runGame = controller.getCommand();

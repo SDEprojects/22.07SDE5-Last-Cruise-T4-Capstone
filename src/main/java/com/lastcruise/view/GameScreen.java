@@ -1,10 +1,15 @@
-package com.lastcruise.controller;
+package com.lastcruise.view;
 
+import com.lastcruise.controller.Action;
+import com.lastcruise.model.Commands;
 import com.lastcruise.view.View;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,16 +22,15 @@ import javax.swing.JTextArea;
 
 public class GameScreen {
 
+  // TODO: Enforce encapsulation (making things private)
   JPanel mainGamePanel, bgImgPanel, itemsPanel, mapPanel, inventoryPanel, dialogueImgPanel, dialogueTextPanel;
   JLabel dialoguePanelText, dialogueText;
   JLayeredPane dialoguePanel;
-  JFrame frame;
   ImageIcon bgImg;
-
   JTextArea dialogueTextArea;
   JScrollPane text;
-
   View view = new View();
+  private Consumer<Action> actionCallback; // TODO: This is a callback to pass an action back to the controller
 
   public GameScreen() {
     buildGameScreen();
@@ -107,6 +111,7 @@ public class GameScreen {
     itemsPanel.setBorder(BorderFactory.createLineBorder(Color.black, 4));
 //    itemsPanel.setBackground(Color.black);
     // Temporary images
+    // TODO: Put getClassLoader stuff in a variable
     ImageIcon img1 = new ImageIcon(getClass().getClassLoader().getResource("images/banana.png"));
     ImageIcon img2 = new ImageIcon(getClass().getClassLoader().getResource("images/paddle.png"));
     ImageIcon img3 = new ImageIcon(getClass().getClassLoader().getResource("images/mushroom.png"));
@@ -116,6 +121,14 @@ public class GameScreen {
     btn1.setOpaque(false);
     btn1.setContentAreaFilled(false);
     btn1.setBorderPainted(false);
+    // attach to button listener callback
+    // action is button press
+    btn1.addActionListener(e -> {
+      Action action = new Action(Commands.PICKUP);
+      // set any other fields necessary
+      // pass back to controller (translate low level user interaction to high level actions in game, pass back to controller)
+      actionCallback.accept(action);
+    });
 
     JButton btn2 = new JButton(img2);
     btn2.setOpaque(false);
@@ -243,10 +256,6 @@ public class GameScreen {
     this.bgImg = bgImg;
   }
 
-  public JFrame getFrame() {
-    return frame;
-  }
-
   public JPanel getMainGamePanel() {
     return mainGamePanel;
   }
@@ -276,5 +285,13 @@ public class GameScreen {
 //  }
 
 
+  public Consumer<Action> getActionCallback() {
+    return actionCallback;
+  }
+
+  public void setActionCallback(
+      Consumer<Action> actionCallback) {
+    this.actionCallback = actionCallback;
+  }
 }
 
