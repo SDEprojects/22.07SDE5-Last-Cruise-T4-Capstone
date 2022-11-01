@@ -14,48 +14,41 @@ import com.lastcruise.model.Player.NoEnoughStaminaException;
 import com.lastcruise.model.PuzzleClient;
 import com.lastcruise.model.SoundEffect;
 import com.lastcruise.view.View;
-import java.awt.TextArea;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import org.w3c.dom.Text;
 
 
 public class Controller {
 
     private final View view = new View();
-
     PuzzleClient puzzleClient = new PuzzleClient();
-
     private String name;
     private Game game;
     private String message = "";
     private boolean keepPlaying = true;
     private final GameLoader gameLoader = new GameLoader();
+    private GUIController gui;
 
-
-    public boolean gameSetUp() throws InterruptedException {
-        MainScreen gameScreen = new MainScreen();
-        TextArea dialogTa = gameScreen.getDialogTa();
-        dialogTa.setText(view.printGameBanner());
-
-
-//        String story = view.printStory();
-        dialogTa.append(view.printStory());
+    public void gameSetUp() throws InterruptedException {
+        gui = new GUIController();
+//        MainScreen gameScreen = new MainScreen();
+//        TextArea dialogTa = gameScreen.getDialogTa();
+//        dialogTa.setText(view.printGameBanner());
+//
+//
+////        String story = view.printStory();
+//        dialogTa.append(view.printStory());
 
 //        String[] storyArr = story.split("");
 //        for(String s: storyArr) {
 //            dialogTa.append(s);
 //            Thread.sleep(50);
 //        }
-        dialogTa.append(view.printInstructions());
-//
-        dialogTa.append(view.printStartGamePrompt());
+//        dialogTa.append(view.printInstructions());
+////
+//        dialogTa.append(view.printStartGamePrompt());
 
 //        String input;
 //        boolean start = false;
@@ -93,7 +86,7 @@ public class Controller {
 //            throw new RuntimeException(e);
 //        }
 //        return start;
-        return true;
+//        return true;
     }
 
     public void getPlayerName() {
@@ -379,7 +372,7 @@ public class Controller {
         Thread.sleep(3000);
     }
 
-
+    // return String[] feed into
     public void updateView() {
         view.clearConsole();
         String location = game.getCurrentLocationName();

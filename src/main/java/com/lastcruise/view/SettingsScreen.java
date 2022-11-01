@@ -1,4 +1,4 @@
-package com.lastcruise.controller;
+package com.lastcruise.view;
 
 import com.lastcruise.model.Music;
 import java.awt.FlowLayout;

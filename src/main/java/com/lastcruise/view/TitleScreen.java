@@ -1,5 +1,6 @@
-package com.lastcruise.controller;
+package com.lastcruise.view;
 
+import com.lastcruise.controller.Controller;
 import com.lastcruise.model.AllSounds;
 import com.lastcruise.model.Music;
 import com.lastcruise.view.View;
@@ -10,6 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+// TODO:  Make three buttons: NEW GAME, LOAD GAME, QUIT
+//  attach action listeners => new game initiates new game
+//   load game => invokes load game method in controller, link to game screen
+//   quit game => System.exit
 public class TitleScreen {
 
   private JLayeredPane titleScreen;
@@ -41,15 +46,15 @@ public class TitleScreen {
     title.setBounds(500, 90, 700, 150);
     title.setFont(new Font("Serif", Font.PLAIN, 85));
 
-    startBtn = new JButton("Start");
+    startBtn = new JButton("New Game");
     startBtn.setBounds(500, 575, 225, 75);
-    startBtn.addActionListener(e -> {
-      try {
-        controller.gameSetUp();
-      } catch (InterruptedException ex) {
-        throw new RuntimeException(ex);
-      }
-    });
+//    startBtn.addActionListener(e -> {
+//      try {
+//        controller.gameSetUp();
+//      } catch (InterruptedException ex) {
+//        throw new RuntimeException(ex);
+//      }
+//    });
 
 //    startBtn.addActionListener(e -> new GameScreen());
 
@@ -64,7 +69,8 @@ public class TitleScreen {
     settingsBtn.setContentAreaFilled(false);
     settingsBtn.setBorderPainted(false);
     settingsBtn.setBorder(null);
-    settingsBtn.addActionListener(e -> new SettingsScreen());
+//    settingsBtn.addActionListener(e -> new SettingsScreen());
+    settingsBtn.addActionListener(e -> System.exit(0));
 
     titleScreen.add(imgSection, Integer.valueOf(0));
     titleScreen.add(title, Integer.valueOf(2));
