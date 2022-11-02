@@ -7,6 +7,7 @@ import com.lastcruise.model.Game;
 import com.lastcruise.model.GameMap.InvalidLocationException;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.Music;
+import com.lastcruise.model.Item;
 import com.lastcruise.model.Player;
 import com.lastcruise.model.Player.ItemNotEdibleException;
 import com.lastcruise.model.Player.NoEnoughStaminaException;
@@ -22,7 +23,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -70,6 +74,7 @@ public class GUIController {
         throw new RuntimeException(e);
       }
     });
+//    mainGameScreen.getSleepBtn().addActionListener(e -> game.playerSleep());
   }
 
   private void loadTitleScreen() {
@@ -141,6 +146,10 @@ public class GUIController {
 
     // Updates GameScreen Location image
     updateLocationImg(location);
+    updateLocationItems();
+    System.out.println(locationItems);
+  }
+
 
     // append additional game messages to the scroll screen
     addGameText(message);
@@ -153,6 +162,7 @@ public class GUIController {
     icon = new ImageIcon(resizeImg);
     mainGameScreen.getBgImgLabel().setIcon(icon);
   }
+
 
   public void processCommand(String[] command) throws InterruptedException {
     Commands c = Commands.valueOf(command[0].toUpperCase());
@@ -363,6 +373,20 @@ public class GUIController {
 
   public Boolean getKeepPlaying() {
     return keepPlaying;
+  }
+
+  public void updateLocationItems() {
+    mainGameScreen.getItemsPanel().removeAll();
+    game.getCurrentLocationItems().keySet().forEach(item -> {
+      ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("images/" + item + ".png"));
+      JButton btn = new JButton(img);
+      btn.setOpaque(false);
+      btn.setContentAreaFilled(false);
+      btn.setBorderPainted(false);
+      mainGameScreen.getItemsPanel().add(btn);
+      mainGameScreen.getItemsPanel().revalidate();
+      mainGameScreen.getItemsPanel().repaint();
+    });
   }
 
   public JFrame getMainFrame() {
