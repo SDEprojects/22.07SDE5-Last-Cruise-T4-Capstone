@@ -265,7 +265,7 @@ public class GameScreen {
     backgroundImgPane.add(westBtn, Integer.valueOf(2));
     westBtn.setBounds(-10, 227, 100, 57);
 
-
+//error
 
     inventoryPanel.add(btn1);
     inventoryPanel.add(btn2);
