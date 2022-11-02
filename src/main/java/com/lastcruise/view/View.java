@@ -32,8 +32,8 @@ public class View {
         return GAME_TEXT.get("Instructions");
     }
 
-    public void printStoryIntro(String name) {
-        System.out.printf(GAME_TEXT.get("StoryIntro"), name);
+    public String printStoryIntro() {
+        return GAME_TEXT.get("StoryIntro");
     }
 
     public void printNamePrompt() {

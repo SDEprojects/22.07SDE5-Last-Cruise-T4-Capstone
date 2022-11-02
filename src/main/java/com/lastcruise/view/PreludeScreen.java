@@ -29,7 +29,7 @@ public class PreludeScreen {
     mainLabel.setFont(new Font("Monospace", Font.PLAIN, 24));
     mainLabel.setBackground(Color.BLACK);
     mainLabel.setLineWrap(true);
-    mainLabel.setBounds(375, 200, 750, 440);
+    mainLabel.setBounds(375, 200, 755, 440);
     mainPanel.add(mainLabel);
 
     continueBtn = new JButton("Continue");
