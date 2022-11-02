@@ -8,9 +8,9 @@ public class Main {
 
   public static void main(String[] args) throws IOException, InterruptedException {
 
-      Controller controller = new Controller();
+      GUIController gui = new GUIController();
       // creates guiController instance in Controller, Prompts the user to start game or quit
-      controller.gameSetUp();
+      gui.gameSetUp();
 
       boolean runGame = true;
       // TODO: Goal to enter while loop and not change too much logic here

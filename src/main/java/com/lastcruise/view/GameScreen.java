@@ -22,15 +22,17 @@ import javax.swing.JTextArea;
 
 public class GameScreen {
 
-  // TODO: Enforce encapsulation (making things private)
-  JPanel mainGamePanel, bgImgPanel, itemsPanel, mapPanel, inventoryPanel, dialogueImgPanel, dialogueTextPanel;
-  JLabel dialoguePanelText, dialogueText;
-  JLayeredPane dialoguePanel;
-  ImageIcon bgImg;
-  JTextArea dialogueTextArea;
-  JScrollPane text;
-  View view = new View();
-  private Consumer<Action> actionCallback; // TODO: This is a callback to pass an action back to the controller
+  // TODO: Enforce encapsulation (making things private),
+  //  Create update screen method to update status stuff
+  private JPanel mainGamePanel, bgImgPanel, itemsPanel, mapPanel, inventoryPanel, dialogueImgPanel, dialogueTextPanel;
+  private JLabel dialoguePanelText, dialogueText, locationLabel, staminaLabel;
+  private JLayeredPane dialoguePanel;
+  private ImageIcon bgImg;
+  private JTextArea dialogueTextArea;
+  private JFrame frame = new JFrame();
+  private JScrollPane text;
+  private View view = new View();
+  private Consumer<String[]> actionCallback;
 
   public GameScreen() {
     buildGameScreen();
@@ -124,10 +126,11 @@ public class GameScreen {
     // attach to button listener callback
     // action is button press
     btn1.addActionListener(e -> {
+      String [] commands = new String[]{"go", "north"};
       Action action = new Action(Commands.PICKUP);
       // set any other fields necessary
       // pass back to controller (translate low level user interaction to high level actions in game, pass back to controller)
-      actionCallback.accept(action);
+      actionCallback.accept(commands);
     });
 
     JButton btn2 = new JButton(img2);
@@ -170,8 +173,19 @@ public class GameScreen {
 
     // Create panel to eventually house map/ compass or player info
     mapPanel = new JPanel();
+    mapPanel.setLayout(null);
     mapPanel.setBounds(1180, 10, 300, 300);
-    mapPanel.setBackground(Color.black);
+    // mapPanel.setBackground(Color.black);
+    // TODO: Add labels to panel
+    locationLabel = new JLabel();
+    locationLabel.setBounds(10, 10, 300, 50);
+    locationLabel.setText("Location!");
+    mapPanel.add(locationLabel);
+
+    staminaLabel = new JLabel();
+    staminaLabel.setBounds(10, 60, 300, 50);
+    staminaLabel.setText("Stamina!");
+    mapPanel.add(staminaLabel);
 
     // Add map to main panel
     mainGamePanel.add(mapPanel);
@@ -241,21 +255,21 @@ public class GameScreen {
 
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
+//    frame.setSize(1500, 800);
+//    frame.add(mainGamePanel);
+//    frame.setVisible(true);
 
   }
 
   public JTextArea getDialogueTextArea() {
     return dialogueTextArea;
   }
-
   public ImageIcon getBgImg() {
     return bgImg;
   }
-
   public void setBgImg(ImageIcon bgImg) {
     this.bgImg = bgImg;
   }
-
   public JPanel getMainGamePanel() {
     return mainGamePanel;
   }
@@ -268,10 +282,6 @@ public class GameScreen {
     return itemsPanel;
   }
 
-//  public JPanel getDialoguePanel() {
-//    return dialoguePanel;
-//  }
-
   public JPanel getMapPanel() {
     return mapPanel;
   }
@@ -280,18 +290,37 @@ public class GameScreen {
     return inventoryPanel;
   }
 
-//  public static void main(String[] args) {
-//    new GameScreen();
-//  }
+  public JLabel getLocationLabel() {
+    return locationLabel;
+  }
+  public void setLocationLabel(JLabel locationLabel) {
+    this.locationLabel = locationLabel;
+  }
+  public JLabel getStaminaLabel() {
+    return staminaLabel;
+  }
+  public void setStaminaLabel(JLabel staminaLabel) {
+    this.staminaLabel = staminaLabel;
+  }
 
-
-  public Consumer<Action> getActionCallback() {
+  public Consumer<String[]> getActionCallback() {
     return actionCallback;
   }
 
-  public void setActionCallback(
-      Consumer<Action> actionCallback) {
+  public void setActionCallback(Consumer<String[]> actionCallback) {
     this.actionCallback = actionCallback;
   }
+
+  public void updateStatus(String location, String stamina) {
+      getLocationLabel().setText(location);
+      getStaminaLabel().setText(stamina);
+  }
+
+  // test method
+  public static void main(String[] args) {
+    GameScreen screen = new GameScreen();
+    screen.updateStatus("Merry", "Christmas");
+  }
+
 }
 

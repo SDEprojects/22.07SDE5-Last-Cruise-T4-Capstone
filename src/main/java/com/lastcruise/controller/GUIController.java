@@ -1,5 +1,6 @@
 package com.lastcruise.controller;
 
+import com.lastcruise.model.Game;
 import com.lastcruise.view.GameScreen;
 import com.lastcruise.view.PreludeScreen;
 import com.lastcruise.view.TitleScreen;
@@ -11,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class GUIController {
 
@@ -18,25 +20,28 @@ public class GUIController {
   private final TitleScreen titleScreen = new TitleScreen();
   private PreludeScreen intermission = new PreludeScreen();
   // Use callback instead of static methods
-  private GameScreen game = new GameScreen();
+  private GameScreen mainGameScreen = new GameScreen();
   static View view = new View();
+  private Controller controller = new Controller();
+  private Game game;
 
   public GUIController() {
     mainFrame = new JFrame("The Last Cruise");
     mainFrame.setPreferredSize(new Dimension(1500, 800));
     mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     mainFrame.setResizable(false);
-
     ImageIcon image = new ImageIcon(getClass().getClassLoader().getResource("images/logo.jpg"));
     mainFrame.setIconImage(image.getImage());
-
     loadTitleScreen();
-//    continueToGame();
-    // This is a high level event listener, envoked by View to perform an action
-//    game.setActionCallback((action) -> {
-//      // would invoke process command in controller
-//      // TODO: Handle action
-//    });
+    mainGameScreen.setActionCallback((commands) -> {
+      try {
+        controller.processCommand(commands, game);
+        // make ure to attach with each event listener to update view
+        updateView();
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    });
   }
 
   private void loadTitleScreen() {
@@ -59,13 +64,23 @@ public class GUIController {
     mainFrame.setVisible(true);
     // TODO: Add scrolling text effect to printSTory in interlude screen
     intermission.changeText(view.printStory());
+    ActionListener updateText = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        intermission.changeText(view.printStoryIntro());
+      }
+    };
+    // use java swing timer to change prelude text, calls new action listener above after 10 seconds
+    Timer timer = new Timer(10000, updateText);
+    timer.setRepeats(false);
+    timer.start();
 
     intermission.getContinueBtn().addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         // sets prelude panel to false
         intermission.getMainPanel().setVisible(false);
-        JPanel gamePanel = game.getMainGamePanel();
+        JPanel gamePanel = mainGameScreen.getMainGamePanel();
         // loads up game panel
         mainFrame.add(gamePanel);
         mainFrame.pack();
@@ -74,8 +89,31 @@ public class GUIController {
     });
   }
 
+  public void gameSetUp() throws InterruptedException {
+    game = new Game("Sailor");
+    updateView();
+  }
+
   private void setGameText(String message) {
-    game.getDialogueTextArea().setText(message);
+    mainGameScreen.getDialogueTextArea().setText(message);
+  }
+
+  public void updateView() {
+    view.clearConsole();
+    String location = game.getCurrentLocationName();
+    String inventory = game.getPlayerInventory().getInventory().keySet().toString();
+    String stamina = game.getPlayerStamina();
+    String locationDesc = game.getCurrentLocationDesc();
+    String locationItems = game.getCurrentLocationItems().keySet().toString();
+    // update GUI View with current location and Stamina
+    this.updateViewGUI(location, stamina);
+
+//        view.printStatusBanner(location, stamina, inventory, locationDesc, locationItems, message);
+//        message = "";
+  }
+
+  public void updateViewGUI(String location, String stamina) {
+    mainGameScreen.updateStatus(location, stamina);
   }
 
   public JFrame getMainFrame() {
@@ -88,6 +126,8 @@ public class GUIController {
 
   public static void main(String[] args) throws InterruptedException {
     GUIController gui = new GUIController();
+    gui.updateViewGUI("Beach", "25");
+
 //    game.getDialogueTextArea().setText(view.printStory());
 //    gui.setGameText(view.printStory());
   }
