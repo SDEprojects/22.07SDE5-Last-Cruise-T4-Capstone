@@ -44,6 +44,7 @@ public class GUIController {
         throw new RuntimeException(e);
       }
     });
+//    mainGameScreen.getSleepBtn().addActionListener(e -> game.playerSleep());
   }
 
   private void loadTitleScreen() {

@@ -25,6 +25,7 @@ public class GameScreen {
   private JTextArea dialogueTextArea;
   private JFrame frame = new JFrame();
   private JScrollPane text;
+  private JButton sleepBtn;
 
   private View view = new View();
   private Consumer<String[]> actionCallback;
@@ -170,6 +171,7 @@ public class GameScreen {
     // mapPanel.setBackground(Color.black);
     // TODO: Add labels to panel
     locationLabel = new JLabel();
+    locationLabel.setBackground(Color.PINK);
     locationLabel.setBounds(10, 10, 300, 50);
     locationLabel.setText("Location!");
     mapPanel.add(locationLabel);
@@ -178,6 +180,26 @@ public class GameScreen {
     staminaLabel.setBounds(10, 60, 300, 50);
     staminaLabel.setText("Stamina!");
     mapPanel.add(staminaLabel);
+
+    sleepBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/sleep.png")));
+    sleepBtn.setOpaque(false);
+    sleepBtn.setContentAreaFilled(false);
+    sleepBtn.setBorderPainted(false);
+    sleepBtn.setBounds(0, 230, 150, 60);
+    sleepBtn.addActionListener(e -> {
+      String[] commands = new String[]{"sleep"};
+      actionCallback.accept(commands);
+    });
+
+
+    JButton eatBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/eat.png")));
+    eatBtn.setOpaque(false);
+    eatBtn.setContentAreaFilled(false);
+    eatBtn.setBorderPainted(false);
+    eatBtn.setBounds(140, 235, 150, 60);
+
+    mapPanel.add(sleepBtn);
+    mapPanel.add(eatBtn);
 
     // Add map to main panel
     mainGamePanel.add(mapPanel);
@@ -284,9 +306,9 @@ public class GameScreen {
 
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
-    frame.setSize(1500, 800);
-    frame.add(mainGamePanel);
-    frame.setVisible(true);
+//    frame.setSize(1500, 800);
+//    frame.add(mainGamePanel);
+//    frame.setVisible(true);
 
   }
 
@@ -351,9 +373,11 @@ public class GameScreen {
     this.actionCallback = actionCallback;
   }
 
+  public JButton getSleepBtn() {
+    return sleepBtn;
+  }
 
-
-  // test method
+// test method
 //  public static void main(String[] args) {
 //    GameScreen screen = new GameScreen();
 //    screen.updateStatus("Merry", "Christmas");
