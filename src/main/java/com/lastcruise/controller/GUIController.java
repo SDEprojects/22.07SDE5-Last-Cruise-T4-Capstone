@@ -1,6 +1,7 @@
 package com.lastcruise.controller;
 
 import com.lastcruise.model.Game;
+import com.lastcruise.model.Item;
 import com.lastcruise.model.Player;
 import com.lastcruise.view.GameScreen;
 import com.lastcruise.view.PreludeScreen;
@@ -10,7 +11,10 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -110,7 +114,10 @@ public class GUIController {
     // update GUI View with current location and Stamina
     mainGameScreen.getLocationLabel().setText(location);
     mainGameScreen.getStaminaLabel().setText(stamina);
+    mainGameScreen.getDialogueTextArea().setText(locationDesc);
     updateLocationImg(location);
+    updateLocationItems();
+    System.out.println(locationItems);
   }
 
 
@@ -120,6 +127,20 @@ public class GUIController {
     Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
     icon = new ImageIcon(resizeImg);
     mainGameScreen.getBgImgLabel().setIcon(icon);
+  }
+
+  public void updateLocationItems() {
+    mainGameScreen.getItemsPanel().removeAll();
+    game.getCurrentLocationItems().keySet().forEach(item -> {
+      ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("images/" + item + ".png"));
+      JButton btn = new JButton(img);
+      btn.setOpaque(false);
+      btn.setContentAreaFilled(false);
+      btn.setBorderPainted(false);
+      mainGameScreen.getItemsPanel().add(btn);
+      mainGameScreen.getItemsPanel().revalidate();
+      mainGameScreen.getItemsPanel().repaint();
+    });
   }
 
 

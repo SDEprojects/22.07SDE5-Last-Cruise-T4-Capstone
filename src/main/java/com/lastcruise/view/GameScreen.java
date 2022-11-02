@@ -193,7 +193,7 @@ public class GameScreen {
     ImageIcon img6 = new ImageIcon(getClass().getClassLoader().getResource("images/cloth.png"));
     ImageIcon img7 = new ImageIcon(getClass().getClassLoader().getResource("images/log.png"));
     ImageIcon img8 = new ImageIcon(getClass().getClassLoader().getResource("images/machete.png"));
-    ImageIcon img9 = new ImageIcon(getClass().getClassLoader().getResource("images/pipe.png"));
+    ImageIcon img9 = new ImageIcon(getClass().getClassLoader().getResource("images/steelpipe.png"));
     ImageIcon img10 = new ImageIcon(getClass().getClassLoader().getResource("images/rope.png"));
 
     JButton btn5 = new JButton(img5);
@@ -271,16 +271,16 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    inventoryPanel.add(btn1);
-    inventoryPanel.add(btn2);
-    inventoryPanel.add(btn3);
-    inventoryPanel.add(btn4);
-    inventoryPanel.add(btn5);
-    inventoryPanel.add(btn6);
-    inventoryPanel.add(btn7);
-    inventoryPanel.add(btn8);
-    inventoryPanel.add(btn9);
-    inventoryPanel.add(btn10);
+//    inventoryPanel.add(btn1);
+//    inventoryPanel.add(btn2);
+//    inventoryPanel.add(btn3);
+//    inventoryPanel.add(btn4);
+//    inventoryPanel.add(btn5);
+//    inventoryPanel.add(btn6);
+//    inventoryPanel.add(btn7);
+//    inventoryPanel.add(btn8);
+//    inventoryPanel.add(btn9);
+//    inventoryPanel.add(btn10);
 
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
