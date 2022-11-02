@@ -319,7 +319,7 @@ public class Controller {
         String locationItems = game.getCurrentLocationItems().keySet().toString();
 
         // update GUI View with current location and Stamina
-        gui.updateViewGUI(location, stamina);
+//        gui.updateViewGUI(location, stamina);
 
 //        view.printStatusBanner(location, stamina, inventory, locationDesc, locationItems, message);
 //        message = "";
