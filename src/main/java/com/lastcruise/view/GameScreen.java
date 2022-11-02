@@ -24,13 +24,14 @@ public class GameScreen {
 
   // TODO: Enforce encapsulation (making things private),
   //  Create update screen method to update status stuff
-  private JPanel mainGamePanel, bgImgPanel, itemsPanel, mapPanel, inventoryPanel, dialogueImgPanel, dialogueTextPanel;
+  private JPanel mainGamePanel, itemsPanel, mapPanel, inventoryPanel, dialogueImgPanel, dialogueTextPanel, bgImgPanel;
   private JLabel dialoguePanelText, dialogueText, locationLabel, staminaLabel;
-  private JLayeredPane dialoguePanel;
+  private JLayeredPane dialoguePanel, backgroundImgPane;
   private ImageIcon bgImg;
   private JTextArea dialogueTextArea;
   private JFrame frame = new JFrame();
   private JScrollPane text;
+
   private View view = new View();
   private Consumer<String[]> actionCallback;
 
@@ -78,7 +79,7 @@ public class GameScreen {
 //    dialogueTextPanel.setBorder(BorderFactory.createLineBorder(Color.black, 5));
 
     dialogueTextArea = new JTextArea();
-    dialogueTextArea.setBounds(65,65,1103,175);
+    dialogueTextArea.setBounds(65, 65, 1103, 175);
 //    dialogueTextArea.setOpaque(false);
 //    dialogueTextArea.setText(view.printStory());
     dialogueTextArea.setOpaque(false);
@@ -87,14 +88,12 @@ public class GameScreen {
 //    dialogueTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 2));
     dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
 
-
 //    text = new JScrollPane(dialogueTextArea);
 //    text.setBounds(15,50,900,125);
 ////    text.getViewport().setOpaque(false);
 ////    text.setOpaque(false);
 ////    dialogueTextArea.add(text);
 //    dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
-
 
     // Create label to actually hold text content
 //    dialogueText = new JLabel("Hello world");
@@ -126,7 +125,7 @@ public class GameScreen {
     // attach to button listener callback
     // action is button press
     btn1.addActionListener(e -> {
-      String [] commands = new String[]{"go", "north"};
+      String[] commands = new String[]{"go", "north"};
       Action action = new Action(Commands.PICKUP);
       // set any other fields necessary
       // pass back to controller (translate low level user interaction to high level actions in game, pass back to controller)
@@ -164,12 +163,16 @@ public class GameScreen {
     JLabel bgImgLabel = new JLabel(bgImg);
 
     // Create panel to house the location background image
+    backgroundImgPane = new JLayeredPane();
+    backgroundImgPane.setBounds(10, 10, 1150, 455);
+
     bgImgPanel = new JPanel();
     bgImgPanel.setBounds(10, 10, 1150, 455);
     bgImgPanel.add(bgImgLabel);
+    backgroundImgPane.add(bgImgPanel, Integer.valueOf(0));
 
     // Add background image panel to main panel
-    mainGamePanel.add(bgImgPanel);
+    mainGamePanel.add(backgroundImgPane);
 
     // Create panel to eventually house map/ compass or player info
     mapPanel = new JPanel();
@@ -234,14 +237,36 @@ public class GameScreen {
     btn10.setContentAreaFilled(false);
     btn10.setBorderPainted(false);
 
-//
-//    JLabel img5Label = new JLabel(img5);
-//    JLabel img6Label = new JLabel(img6);
-//    JLabel img7Label = new JLabel(img7);
-//    JLabel img8Label = new JLabel(img8);
-//    JLabel img9Label = new JLabel(img9);
-//    JLabel img10Label = new JLabel(img10);
-//
+    JButton northBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/up.png")));
+    northBtn.setOpaque(false);
+    northBtn.setContentAreaFilled(false);
+    northBtn.setBorderPainted(false);
+    backgroundImgPane.add(northBtn, Integer.valueOf(2));
+    northBtn.setBounds(555, 20, 100, 50);
+
+    JButton southBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/down.png")));
+    southBtn.setOpaque(false);
+    southBtn.setContentAreaFilled(false);
+    southBtn.setBorderPainted(false);
+    backgroundImgPane.add(southBtn, Integer.valueOf(2));
+    southBtn.setBounds(555, 400, 100, 50);
+
+    JButton eastBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/right.png")));
+    eastBtn.setOpaque(false);
+    eastBtn.setContentAreaFilled(false);
+    eastBtn.setBorderPainted(false);
+    backgroundImgPane.add(eastBtn, Integer.valueOf(2));
+    eastBtn.setBounds(1070, 227, 100, 57);
+
+    JButton westBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/left.png")));
+    westBtn.setOpaque(false);
+    westBtn.setContentAreaFilled(false);
+    westBtn.setBorderPainted(false);
+    backgroundImgPane.add(westBtn, Integer.valueOf(2));
+    westBtn.setBounds(-10, 227, 100, 57);
+
+
+
     inventoryPanel.add(btn1);
     inventoryPanel.add(btn2);
     inventoryPanel.add(btn3);
@@ -255,27 +280,30 @@ public class GameScreen {
 
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
-//    frame.setSize(1500, 800);
-//    frame.add(mainGamePanel);
-//    frame.setVisible(true);
+    frame.setSize(1500, 800);
+    frame.add(mainGamePanel);
+    frame.setVisible(true);
 
   }
 
   public JTextArea getDialogueTextArea() {
     return dialogueTextArea;
   }
+
   public ImageIcon getBgImg() {
     return bgImg;
   }
+
   public void setBgImg(ImageIcon bgImg) {
     this.bgImg = bgImg;
   }
+
   public JPanel getMainGamePanel() {
     return mainGamePanel;
   }
 
-  public JPanel getBgImgPanel() {
-    return bgImgPanel;
+  public JLayeredPane getBgImgPanel() {
+    return backgroundImgPane;
   }
 
   public JPanel getItemsPanel() {
@@ -293,12 +321,15 @@ public class GameScreen {
   public JLabel getLocationLabel() {
     return locationLabel;
   }
+
   public void setLocationLabel(JLabel locationLabel) {
     this.locationLabel = locationLabel;
   }
+
   public JLabel getStaminaLabel() {
     return staminaLabel;
   }
+
   public void setStaminaLabel(JLabel staminaLabel) {
     this.staminaLabel = staminaLabel;
   }
@@ -312,8 +343,8 @@ public class GameScreen {
   }
 
   public void updateStatus(String location, String stamina) {
-      getLocationLabel().setText(location);
-      getStaminaLabel().setText(stamina);
+    getLocationLabel().setText(location);
+    getStaminaLabel().setText(stamina);
   }
 
   // test method
