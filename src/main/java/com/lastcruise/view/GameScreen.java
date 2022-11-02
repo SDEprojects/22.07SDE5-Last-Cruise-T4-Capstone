@@ -284,9 +284,9 @@ public class GameScreen {
 
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
-    frame.setSize(1500, 800);
-    frame.add(mainGamePanel);
-    frame.setVisible(true);
+//    frame.setSize(1500, 800);
+//    frame.add(mainGamePanel);
+//    frame.setVisible(true);
 
   }
 
