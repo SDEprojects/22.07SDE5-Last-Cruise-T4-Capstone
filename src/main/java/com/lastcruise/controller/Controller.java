@@ -23,62 +23,18 @@ import java.net.URL;
 public class Controller {
 
     private final View view = new View();
-
     PuzzleClient puzzleClient = new PuzzleClient();
-    private String name;
+    private String name = "Sailor";
     private Game game;
     private String message = "";
     private boolean keepPlaying = true;
     private final GameLoader gameLoader = new GameLoader();
+    private GUIController gui;
 
-    public boolean gameSetUp() {
-        String input;
-        boolean start = false;
-        view.printGameBanner();
-        view.printStory();
-        view.printInstructions();
-
-        try {
-            view.printStartGamePrompt();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            input = reader.readLine().trim();
-            if (input.equals("yes")) {
-                start = true;
-                getPlayerName();
-                view.printStoryIntro(name);
-                game = new Game(name);
-                System.out.println("enter any key to continue");
-                String continueStory = reader.readLine().trim();
-                updateView();
-            } else if (input.equals("load")) {
-                start = true;
-
-                try {
-                    game = gameLoader.loadGame();
-                } catch (Exception e) {
-                    view.printCantLoadGame();
-                    getPlayerName();
-                    view.printHelpCommands();
-                    game = new Game(name);
-                } finally {
-                    updateView();
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return start;
-    }
-
-    public void getPlayerName() {
-        try {
-            view.printNamePrompt();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            name = reader.readLine().trim();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void gameSetUp() throws InterruptedException {
+        gui = new GUIController();
+        game = new Game(name);
+        updateView();
     }
 
     public boolean getCommand() throws InterruptedException {
@@ -102,14 +58,14 @@ public class Controller {
 
         // PROCESS COMMAND
         } else {
-            processCommand(command);
+            processCommand(command, game);
         }
 
         return keepPlaying;
     }
 
 
-    public void processCommand(String[] command) throws InterruptedException {
+    public void processCommand(String[] command, Game game) throws InterruptedException {
         Commands c = Commands.valueOf(command[0].toUpperCase());
 
         switch (c) {
@@ -353,7 +309,7 @@ public class Controller {
         Thread.sleep(3000);
     }
 
-
+   // feed string into GUIController method to update GameScreen
     public void updateView() {
         view.clearConsole();
         String location = game.getCurrentLocationName();
@@ -362,8 +318,11 @@ public class Controller {
         String locationDesc = game.getCurrentLocationDesc();
         String locationItems = game.getCurrentLocationItems().keySet().toString();
 
-        view.printStatusBanner(location, stamina, inventory, locationDesc, locationItems, message);
-        message = "";
+        // update GUI View with current location and Stamina
+        gui.updateViewGUI(location, stamina);
+
+//        view.printStatusBanner(location, stamina, inventory, locationDesc, locationItems, message);
+//        message = "";
     }
 }
 

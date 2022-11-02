@@ -1,4 +1,4 @@
-package com.lastcruise.controller;
+package com.lastcruise.view;
 
 import com.lastcruise.model.Music;
 import java.awt.FlowLayout;
@@ -34,6 +34,7 @@ public class SettingsScreen {
 
     dialog.setSize(300, 100);
 
+    dialog.setLocationRelativeTo(null);
     dialog.setVisible(true);
 
 
