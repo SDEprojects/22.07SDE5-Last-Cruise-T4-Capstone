@@ -19,7 +19,7 @@ public class GameScreen {
   // TODO: Enforce encapsulation (making things private),
   //  Create update screen method to update status stuff
   private JPanel mainGamePanel, itemsPanel, mapPanel, inventoryPanel, dialogueImgPanel, dialogueTextPanel, bgImgPanel;
-  private JLabel dialoguePanelText, dialogueText, locationLabel, staminaLabel;
+  private JLabel dialoguePanelText, dialogueText, locationLabel, staminaLabel, bgImgLabel;
   private JLayeredPane dialoguePanel, backgroundImgPane;
   private ImageIcon bgImg;
   private JTextArea dialogueTextArea;
@@ -143,12 +143,11 @@ public class GameScreen {
     mainGamePanel.add(itemsPanel);
 
     bgImg = new ImageIcon(getClass().getClassLoader().getResource("images/BEACH.jpg"));
-//    ImageIcon jungle = new ImageIcon(getClass().getClassLoader().getResource("images/OLD MINE.jpg"));
     Image image = bgImg.getImage();
     Image newBgImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
     bgImg = new ImageIcon(newBgImg);
     // Image to be used for background image
-    JLabel bgImgLabel = new JLabel(bgImg);
+    bgImgLabel = new JLabel(bgImg);
 //    bgImgLabel.setIcon(jungle);
 
 
@@ -291,6 +290,11 @@ public class GameScreen {
 
   }
 
+
+  public JLabel getBgImgLabel() {
+    return bgImgLabel;
+  }
+
   public JTextArea getDialogueTextArea() {
     return dialogueTextArea;
   }
@@ -347,16 +351,13 @@ public class GameScreen {
     this.actionCallback = actionCallback;
   }
 
-  public void updateStatus(String location, String stamina) {
-    getLocationLabel().setText(location);
-    getStaminaLabel().setText(stamina);
-  }
+
 
   // test method
-  public static void main(String[] args) {
-    GameScreen screen = new GameScreen();
-    screen.updateStatus("Merry", "Christmas");
-  }
+//  public static void main(String[] args) {
+//    GameScreen screen = new GameScreen();
+//    screen.updateStatus("Merry", "Christmas");
+//  }
 
 }
 
