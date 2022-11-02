@@ -1,14 +1,8 @@
 package com.lastcruise.view;
 
-import com.lastcruise.controller.Action;
-import com.lastcruise.model.Commands;
-import com.lastcruise.view.View;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.TextArea;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -124,13 +118,6 @@ public class GameScreen {
     btn1.setBorderPainted(false);
     // attach to button listener callback
     // action is button press
-    btn1.addActionListener(e -> {
-      String[] commands = new String[]{"go", "north"};
-      Action action = new Action(Commands.PICKUP);
-      // set any other fields necessary
-      // pass back to controller (translate low level user interaction to high level actions in game, pass back to controller)
-      actionCallback.accept(commands);
-    });
 
     JButton btn2 = new JButton(img2);
     btn2.setOpaque(false);
@@ -155,12 +142,15 @@ public class GameScreen {
     // add location items to main panel
     mainGamePanel.add(itemsPanel);
 
-    bgImg = new ImageIcon(getClass().getClassLoader().getResource("images/beach1.jpg"));
+    bgImg = new ImageIcon(getClass().getClassLoader().getResource("images/BEACH.jpg"));
+//    ImageIcon jungle = new ImageIcon(getClass().getClassLoader().getResource("images/OLD MINE.jpg"));
     Image image = bgImg.getImage();
     Image newBgImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
     bgImg = new ImageIcon(newBgImg);
     // Image to be used for background image
     JLabel bgImgLabel = new JLabel(bgImg);
+//    bgImgLabel.setIcon(jungle);
+
 
     // Create panel to house the location background image
     backgroundImgPane = new JLayeredPane();
@@ -237,12 +227,17 @@ public class GameScreen {
     btn10.setContentAreaFilled(false);
     btn10.setBorderPainted(false);
 
+    // Adding directional buttons w/ event listeners (connected in GUIController)
     JButton northBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/up.png")));
     northBtn.setOpaque(false);
     northBtn.setContentAreaFilled(false);
     northBtn.setBorderPainted(false);
     backgroundImgPane.add(northBtn, Integer.valueOf(2));
     northBtn.setBounds(555, 20, 100, 50);
+    northBtn.addActionListener(e -> {
+      String[] commands = new String[]{"go", "north"};
+      actionCallback.accept(commands);
+    });
 
     JButton southBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/down.png")));
     southBtn.setOpaque(false);
@@ -250,6 +245,10 @@ public class GameScreen {
     southBtn.setBorderPainted(false);
     backgroundImgPane.add(southBtn, Integer.valueOf(2));
     southBtn.setBounds(555, 400, 100, 50);
+    southBtn.addActionListener(e -> {
+      String[] commands = new String[]{"go", "south"};
+      actionCallback.accept(commands);
+    });
 
     JButton eastBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/right.png")));
     eastBtn.setOpaque(false);
@@ -257,6 +256,10 @@ public class GameScreen {
     eastBtn.setBorderPainted(false);
     backgroundImgPane.add(eastBtn, Integer.valueOf(2));
     eastBtn.setBounds(1070, 227, 100, 57);
+    eastBtn.addActionListener(e -> {
+      String[] commands = new String[]{"go", "east"};
+      actionCallback.accept(commands);
+    });
 
     JButton westBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/left.png")));
     westBtn.setOpaque(false);
@@ -264,8 +267,10 @@ public class GameScreen {
     westBtn.setBorderPainted(false);
     backgroundImgPane.add(westBtn, Integer.valueOf(2));
     westBtn.setBounds(-10, 227, 100, 57);
-
-//error
+    westBtn.addActionListener(e -> {
+      String[] commands = new String[]{"go", "west"};
+      actionCallback.accept(commands);
+    });
 
     inventoryPanel.add(btn1);
     inventoryPanel.add(btn2);
