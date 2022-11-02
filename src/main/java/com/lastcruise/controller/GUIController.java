@@ -1,11 +1,13 @@
 package com.lastcruise.controller;
 
 import com.lastcruise.model.Game;
+import com.lastcruise.model.Player;
 import com.lastcruise.view.GameScreen;
 import com.lastcruise.view.PreludeScreen;
 import com.lastcruise.view.TitleScreen;
 import com.lastcruise.view.View;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -106,15 +108,20 @@ public class GUIController {
     String locationDesc = game.getCurrentLocationDesc();
     String locationItems = game.getCurrentLocationItems().keySet().toString();
     // update GUI View with current location and Stamina
-    this.updateViewGUI(location, stamina);
-
-//        view.printStatusBanner(location, stamina, inventory, locationDesc, locationItems, message);
-//        message = "";
+    mainGameScreen.getLocationLabel().setText(location);
+    mainGameScreen.getStaminaLabel().setText(stamina);
+    updateLocationImg(location);
   }
 
-  public void updateViewGUI(String location, String stamina) {
-    mainGameScreen.updateStatus(location, stamina);
+
+  public void updateLocationImg(String location) {
+    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + location +".jpg"));
+    Image image = icon.getImage();
+    Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
+    icon = new ImageIcon(resizeImg);
+    mainGameScreen.getBgImgLabel().setIcon(icon);
   }
+
 
   public JFrame getMainFrame() {
     return mainFrame;
@@ -124,11 +131,11 @@ public class GUIController {
     return titleScreen;
   }
 
-  public static void main(String[] args) throws InterruptedException {
-    GUIController gui = new GUIController();
-    gui.updateViewGUI("Beach", "25");
+//  public static void main(String[] args) throws InterruptedException {
+//    GUIController gui = new GUIController();
+//    gui.updateViewGUI("Beach", "25");
 
 //    game.getDialogueTextArea().setText(view.printStory());
 //    gui.setGameText(view.printStory());
   }
-}
+
