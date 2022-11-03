@@ -196,6 +196,57 @@ public class GUIController {
             pitScreen.appendToPuzzleTextArea(view.puzzleMessagePrompt());
 //            message = view.puzzleMessagePrompt();
 //            updateView();
+            pitScreen.appendToPuzzleTextArea(puzzleClient.puzzleGenerator());
+            ActionListener pitfall = new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                pitScreen.appendToPuzzleTextArea("\n\n\nYou are going to sleep for a thousand years. Beginning...");
+                pitScreen.appendToPuzzleTextArea("\n\nPlease wait 15 seconds.");
+                pitScreen.getSubmitButton().removeActionListener(pitScreen.getSubmit());
+              }
+            };
+            ActionListener leavePit = new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                String[] command = new String[]{"GO", "EAST"};
+                try {
+                  processCommand(command);
+                } catch (InterruptedException ex) {
+                  throw new RuntimeException(ex);
+                }
+                // Change the screen back to mainGameScreen
+                pitScreen.getPrimaryPanel().setVisible(false);
+                mainGameScreen.getMainGamePanel().setVisible(true);
+                updateView();
+              }
+            };
+            pitScreen.setActionCallback((playerAnswer) -> {
+                Boolean answer = puzzleClient.checkPuzzleAnswer(playerAnswer);
+                if (answer) {
+                  pitScreen.appendToPuzzleTextArea(view.solvedPuzzleMessage());
+                  Timer timer = new Timer(3000, leavePit);
+                  timer.setRepeats(false);
+                  timer.start();
+                } else {
+                  pitScreen.appendToPuzzleTextArea(view.unSolvedPuzzleMessage());
+                  pitScreen.getSubmitButton().removeActionListener(pitScreen.getSubmit());
+                  try {
+                    puzzleClient.puzzlePunishmentSound();
+                  } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                  }
+                  // Wait three seconds and tell player they were wrong
+                  Timer timer = new Timer(3000, pitfall);
+                  timer.setRepeats(false);
+                  timer.start();
+                  // Wait 15 seconds before continue with game
+                  timer = new Timer(15000, leavePit);
+                  timer.setRepeats(false);
+                  timer.start();
+                }
+            });
+
+
 //            if (puzzleClient.puzzleGenerator()) {
 //              message = view.solvedPuzzleMessage();
 //            } else {

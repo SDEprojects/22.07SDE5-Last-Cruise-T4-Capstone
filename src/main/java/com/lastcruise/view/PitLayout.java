@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,16 @@ public class PitLayout {
   private JTextField userInput;
   private JButton submitButton;
   private JPanel primaryPanel;
+  private String playerAnswer;
+  private Consumer<String> actionCallback;
+  ActionListener submit = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      // captures text successfully
+      playerAnswer = userInput.getText();
+      actionCallback.accept(playerAnswer);
+    }
+  };
 
   // Temporary Fields for testing
   private JFrame frame = new JFrame();
@@ -38,14 +49,7 @@ public class PitLayout {
     userInput.setBackground(Color.GRAY);
     userInput.setForeground(Color.WHITE);
 //    userInput.setBorder(BorderFactory.createLineBorder(Color.white));
-    submitButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        // captures text successfully
-        String answer = userInput.getText();
-        System.out.println(answer);
-      }
-    });
+    submitButton.addActionListener(submit);
 
 //    // Temporary Test Frame
 //    frame.setSize(1500, 800);
@@ -75,6 +79,22 @@ public class PitLayout {
 
   public JPanel getPrimaryPanel() {
     return primaryPanel;
+  }
+
+  public Consumer<String> getActionCallback() {
+    return actionCallback;
+  }
+
+  public void setActionCallback(Consumer<String> actionCallback) {
+    this.actionCallback = actionCallback;
+  }
+
+  public JButton getSubmitButton() {
+    return submitButton;
+  }
+
+  public ActionListener getSubmit() {
+    return submit;
   }
 
   public static void main(String[] args) {
