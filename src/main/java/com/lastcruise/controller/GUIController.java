@@ -17,6 +17,9 @@ import com.lastcruise.view.GameScreen;
 import com.lastcruise.view.PreludeScreen;
 import com.lastcruise.view.TitleScreen;
 import com.lastcruise.view.View;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -28,9 +31,12 @@ import java.util.Objects;
 import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 public class GUIController {
@@ -53,6 +59,7 @@ public class GUIController {
   private Game game;
   private Controller controller = new Controller();
   private Boolean keepPlaying = true;
+  private ClassLoader loader = getClass().getClassLoader();
 
   // CONSTRUCTOR
   public GUIController() {
@@ -61,7 +68,7 @@ public class GUIController {
     mainFrame.setPreferredSize(new Dimension(1500, 800));
     mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     mainFrame.setResizable(false);
-    ImageIcon image = new ImageIcon(getClass().getClassLoader().getResource("images/logo.jpg"));
+    ImageIcon image = new ImageIcon(loader.getResource("images/logo.jpg"));
     mainFrame.setIconImage(image.getImage());
     // LOAD TITLE SCREEN
     loadTitleScreen();
@@ -86,7 +93,8 @@ public class GUIController {
     mainFrame.setLocationRelativeTo(null);
     mainFrame.setVisible(true);
     // start game action listener
-    titleScreen.getStartBtn().addActionListener(e -> {continueToGame();
+    titleScreen.getStartBtn().addActionListener(e -> {
+      continueToGame();
     });
   }
 
@@ -148,14 +156,14 @@ public class GUIController {
     // Updates GameScreen Location image
     updateLocationImg(location);
     updateLocationItems();
-    System.out.println(locationItems);
+//    System.out.println(locationItems);
 
     // append additional game messages to the scroll screen
     addGameText(message);
   }
 
   public void updateLocationImg(String location) {
-    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + location +".jpg"));
+    ImageIcon icon = new ImageIcon(loader.getResource("images/" + location + ".jpg"));
     Image image = icon.getImage();
     Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
     icon = new ImageIcon(resizeImg);
@@ -328,7 +336,8 @@ public class GUIController {
         } else if (command[1].equals("down")) {
           Music.decreaseMusic();
           break;
-        } else if (command[1].equals("off") || command[1].equals("mute") || command[1].equals("stop")) {
+        } else if (command[1].equals("off") || command[1].equals("mute") || command[1].equals(
+            "stop")) {
           Music.muteMusic();
           break;
         } else if (command[1].equals("on") || command[1].equals("unmute")) {
@@ -376,45 +385,130 @@ public class GUIController {
 
   public void updateLocationItems() {
     mainGameScreen.getItemsPanel().removeAll();
-    game.getCurrentLocationItems().keySet().forEach(item -> {
-      ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("images/" + item + ".png"));
-      JButton btn = new JButton(img);
-      btn.setOpaque(false);
-      btn.setContentAreaFilled(false);
-      btn.setBorderPainted(false);
-      btn.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          String[] command = new String[]{"grab", item};
-          try {
-            if (game.getPlayerStaminaInt() < 25) {
-              updateView();
-              mainGameScreen.getDialogueTextArea().append(view.getNoPickUpStamina());
-            } else if (item.equals("log") && !game.getPlayerInventory().getInventory().containsKey("machete")) {
-              updateView();
-              mainGameScreen.getDialogueTextArea().append(view.cantGrabItem());
-            } else {
-              processCommand(command);
-              ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("images/" + item + ".png"));
-              JButton btn = new JButton(img);
-              btn.setOpaque(false);
-              btn.setContentAreaFilled(false);
-              btn.setBorderPainted(false);
-              mainGameScreen.getInventoryPanel().add(btn);
-              mainGameScreen.getItemsPanel().revalidate();
-              mainGameScreen.getItemsPanel().repaint();
-              updateView();
-            }
-          } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-          }
-        }
-      });
-      mainGameScreen.getItemsPanel().add(btn);
+    if (game.getCurrentLocationItems().isEmpty()) {
+      mainGameScreen.getItemsPanel().removeAll();
       mainGameScreen.getItemsPanel().revalidate();
       mainGameScreen.getItemsPanel().repaint();
-    });
-  }
+    } else {
+
+      game.getCurrentLocationItems().keySet().forEach(item -> {
+        // Creating item panel buttons
+        ImageIcon img = new ImageIcon(loader.getResource("images/" + item + ".png"));
+        JButton btn = new JButton(img);
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            String[] command = new String[]{"grab", item};
+            try {
+              if (game.getPlayerStaminaInt() < 25) {
+                updateView();
+                mainGameScreen.getDialogueTextArea().append(view.getNoPickUpStamina());
+              } else if (item.equals("log") && !game.getPlayerInventory().getInventory()
+                  .containsKey("machete")) {
+                updateView();
+                mainGameScreen.getDialogueTextArea().append(view.cantGrabItem());
+              } else {
+                // duplicate item panel btns to inventory panel btns to add additional event listeners
+                processCommand(command);
+                ImageIcon img = new ImageIcon(loader.getResource("images/" + item + ".png"));
+                JButton btn = new JButton(img);
+                btn.setOpaque(false);
+                btn.setContentAreaFilled(false);
+                btn.setBorderPainted(false);
+                btn.addActionListener(new ActionListener() {
+                  @Override
+                  public void actionPerformed(ActionEvent e) {
+                    // create new frame that houses item description, dropBtn and if applicable, eatBtn
+                    String desc = game.getPlayerInventory().getInventory().get(item)
+                        .getDescription();
+                    JFrame frame = new JFrame();
+                    // Make Text Area
+                    JDialog jd = new JDialog(frame, "Inventory Item", true);
+                    jd.setLayout(null);
+                    JTextArea itemDesc = new JTextArea();
+                    itemDesc.setText("Item Description: \n" + desc);
+                    itemDesc.setLineWrap(true);
+                    itemDesc.setEditable(false);
+                    itemDesc.setBounds(10, 10, 280, 100);
+                    jd.add(itemDesc);
+                    jd.setSize(300, 300);
+
+                    // Make drop button
+                    JButton dropBtn = new JButton("Drop");
+                    dropBtn.setBounds(0, 130, 75, 75);
+                    dropBtn.setBackground(Color.darkGray);
+                    dropBtn.addActionListener(new ActionListener() {
+                      @Override
+                      public void actionPerformed(ActionEvent e) {
+                        String[] command = new String[]{"drop", item};
+                        if (game.getPlayerStaminaInt() < 25) {
+                          updateView();
+                          mainGameScreen.getDialogueTextArea().append(view.getNoDropStamina());
+                        } else {
+                          try {
+                            processCommand(command);
+                            frame.setVisible(false);
+                            if (btn != null) {
+                              btn.getParent().remove(btn);
+                              mainGameScreen.getInventoryPanel().revalidate();
+                              mainGameScreen.getInventoryPanel().repaint();
+                              updateView();
+                            }
+                          } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                          }
+                        }
+                      }
+                    });
+
+                    // make eat button if item is edible
+                    if (game.getPlayerInventory().getInventory().get(item).getEdible()) {
+                      JButton eatBtn = new JButton("Eat");
+                      eatBtn.setBounds(140, 130, 75, 75);
+                      eatBtn.setBackground(Color.darkGray);
+                      eatBtn.addActionListener(new ActionListener() {
+                        String[] command = new String[]{"eat", item};
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                          try {
+                            processCommand(command);
+                            frame.setVisible(false);
+                            if (btn != null) {
+                              btn.getParent().remove(btn);
+                              mainGameScreen.getInventoryPanel().revalidate();
+                              mainGameScreen.getInventoryPanel().repaint();
+                              updateView();
+                            }
+                          } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                          }
+                        }
+                      });
+                      jd.add(eatBtn);
+                    }
+                    jd.add(dropBtn);
+                    jd.setLocationRelativeTo(mainGameScreen.getInventoryPanel());
+                    jd.setVisible(true);
+                  }
+                });
+                mainGameScreen.getInventoryPanel().add(btn);
+                mainGameScreen.getItemsPanel().revalidate();
+                mainGameScreen.getItemsPanel().repaint();
+                updateView();
+              }
+            } catch (InterruptedException ex) {
+              throw new RuntimeException(ex);
+            }
+          }
+        });
+        mainGameScreen.getItemsPanel().add(btn);
+        mainGameScreen.getItemsPanel().revalidate();
+        mainGameScreen.getItemsPanel().repaint();
+      });
+    }}
 
   public JFrame getMainFrame() {
     return mainFrame;
@@ -430,5 +524,5 @@ public class GUIController {
 
 //    game.getDialogueTextArea().setText(view.printStory());
 //    gui.setGameText(view.printStory());
-  }
+}
 

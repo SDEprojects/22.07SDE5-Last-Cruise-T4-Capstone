@@ -54,8 +54,7 @@ public class View {
 
     //------------VIEW MESSAGES------------------------------------------
     public String getItemDescription(String description) {
-        return String.format(Colors.BLUE + GAME_TEXT.get("ItemDescription") + Colors.RESET,
-            description);
+        return String.format(GAME_TEXT.get("ItemDescription"), description);
     }
 
     public String getInvalidItemMessage() {
@@ -107,7 +106,7 @@ public class View {
     }
 
     public String getNoDropStamina() {
-        return Colors.RED + GAME_TEXT.get("NotEnoughDropStamina") + Colors.RESET;
+        return GAME_TEXT.get("NotEnoughDropStamina");
     }
 
     public String getGameSaved() {

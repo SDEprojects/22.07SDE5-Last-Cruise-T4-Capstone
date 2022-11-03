@@ -185,21 +185,13 @@ public class GameScreen {
     sleepBtn.setOpaque(false);
     sleepBtn.setContentAreaFilled(false);
     sleepBtn.setBorderPainted(false);
-    sleepBtn.setBounds(0, 230, 150, 60);
+    sleepBtn.setBounds(36, 230, 250, 60);
     sleepBtn.addActionListener(e -> {
       String[] commands = new String[]{"sleep"};
       actionCallback.accept(commands);
     });
 
-
-    JButton eatBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/eat.png")));
-    eatBtn.setOpaque(false);
-    eatBtn.setContentAreaFilled(false);
-    eatBtn.setBorderPainted(false);
-    eatBtn.setBounds(140, 235, 150, 60);
-
     mapPanel.add(sleepBtn);
-    mapPanel.add(eatBtn);
 
     // Add map to main panel
     mainGamePanel.add(mapPanel);
