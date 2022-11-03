@@ -54,8 +54,9 @@ public class View {
 
     //------------VIEW MESSAGES------------------------------------------
     public String getItemDescription(String description) {
-        return String.format(GAME_TEXT.get("ItemDescription"),
-            description);
+
+        return String.format(GAME_TEXT.get("ItemDescription"), description);
+
     }
 
     public String getInvalidItemMessage() {
