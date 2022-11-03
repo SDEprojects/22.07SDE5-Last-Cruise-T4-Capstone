@@ -14,6 +14,7 @@ import com.lastcruise.model.Player.NoEnoughStaminaException;
 import com.lastcruise.model.PuzzleClient;
 import com.lastcruise.model.SoundEffect;
 import com.lastcruise.view.GameScreen;
+import com.lastcruise.view.PitLayout;
 import com.lastcruise.view.PreludeScreen;
 import com.lastcruise.view.TitleScreen;
 import com.lastcruise.view.View;
@@ -49,6 +50,7 @@ public class GUIController {
   private PreludeScreen intermission = new PreludeScreen();
   // Use callback instead of static methods
   private GameScreen mainGameScreen = new GameScreen();
+  private PitLayout pitScreen = new PitLayout();
 
   // Controller Related Fields
   private final View view = new View();
@@ -163,11 +165,15 @@ public class GUIController {
   }
 
   public void updateLocationImg(String location) {
-    ImageIcon icon = new ImageIcon(loader.getResource("images/" + location + ".jpg"));
-    Image image = icon.getImage();
-    Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
-    icon = new ImageIcon(resizeImg);
-    mainGameScreen.getBgImgLabel().setIcon(icon);
+
+   
+    if (!location.equalsIgnoreCase("pit")) {
+      ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + location +".jpg"));
+      Image image = icon.getImage();
+      Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
+      icon = new ImageIcon(resizeImg);
+      mainGameScreen.getBgImgLabel().setIcon(icon);
+    }
   }
 
 
@@ -182,24 +188,83 @@ public class GUIController {
           // TODO: Adjust PIT to print message elsewhere once panel is decided
           if (game.getCurrentLocationName().equals("PIT")) {
 
+            // If location is pit, load up pit panel screen
+            mainGameScreen.getMainGamePanel().setVisible(false);
+            JPanel pit = pitScreen.getPrimaryPanel();
+            mainFrame.add(pit);
+            mainFrame.pack();
+            mainFrame.setVisible(true);
+
             URL fallSoundUrl = getClass().getResource(
                 AllSounds.ALL_SOUNDS.get("pitFall"));
             SoundEffect.runAudio(fallSoundUrl);
 
-            message = view.pitFallPrompt();
-            updateView();
+            // Show pitFallPrompt to User
+            pitScreen.changePuzzleTextArea(view.pitFallPrompt());
+//            updateView();
 //            updateLocationTimer();
-            message = view.puzzleMessagePrompt();
-            updateView();
+            pitScreen.appendToPuzzleTextArea(view.puzzleMessagePrompt());
+//            message = view.puzzleMessagePrompt();
+//            updateView();
+            pitScreen.appendToPuzzleTextArea(puzzleClient.puzzleGenerator());
+            ActionListener pitfall = new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                pitScreen.appendToPuzzleTextArea("\n\n\nYou are going to sleep for a thousand years. Beginning...");
+                pitScreen.appendToPuzzleTextArea("\n\nPlease wait 15 seconds.");
+                pitScreen.getSubmitButton().removeActionListener(pitScreen.getSubmit());
+              }
+            };
+            ActionListener leavePit = new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                String[] command = new String[]{"GO", "EAST"};
+                try {
+                  processCommand(command);
+                } catch (InterruptedException ex) {
+                  throw new RuntimeException(ex);
+                }
+                // Change the screen back to mainGameScreen
+                pitScreen.getPrimaryPanel().setVisible(false);
+                mainGameScreen.getMainGamePanel().setVisible(true);
+                updateView();
+              }
+            };
+            pitScreen.setActionCallback((playerAnswer) -> {
+                Boolean answer = puzzleClient.checkPuzzleAnswer(playerAnswer);
+                if (answer) {
+                  pitScreen.appendToPuzzleTextArea(view.solvedPuzzleMessage());
+                  Timer timer = new Timer(3000, leavePit);
+                  timer.setRepeats(false);
+                  timer.start();
+                } else {
+                  pitScreen.appendToPuzzleTextArea(view.unSolvedPuzzleMessage());
+                  pitScreen.getSubmitButton().removeActionListener(pitScreen.getSubmit());
+                  try {
+                    puzzleClient.puzzlePunishmentSound();
+                  } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                  }
+                  // Wait three seconds and tell player they were wrong
+                  Timer timer = new Timer(3000, pitfall);
+                  timer.setRepeats(false);
+                  timer.start();
+                  // Wait 15 seconds before continue with game
+                  timer = new Timer(15000, leavePit);
+                  timer.setRepeats(false);
+                  timer.start();
+                }
+            });
 
-            if (puzzleClient.puzzleGenerator()) {
-              message = view.solvedPuzzleMessage();
-            } else {
-              message = view.unSolvedPuzzleMessage();
-              updateView();
-              puzzleClient.puzzlePunishment();
-              message = view.pitFallEscapePrompt();
-            }
+
+//            if (puzzleClient.puzzleGenerator()) {
+//              message = view.solvedPuzzleMessage();
+//            } else {
+//              message = view.unSolvedPuzzleMessage();
+//              updateView();
+//              puzzleClient.puzzlePunishment();
+//              message = view.pitFallEscapePrompt();
+//            }
           } else {
             URL runSoundUrl = getClass().getResource(
                 AllSounds.ALL_SOUNDS.get("run"));
@@ -209,10 +274,12 @@ public class GUIController {
         } catch (InvalidLocationException e) {
           message = view.getInvalidLocationMessage();
 
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-
-        } catch (NoEnoughStaminaException e) {
+        }
+//        catch (InterruptedException e) {
+//          throw new RuntimeException(e);
+//
+//        }
+        catch (NoEnoughStaminaException e) {
           message = view.getNoStaminaToMove();
 
         }

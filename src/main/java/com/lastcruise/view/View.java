@@ -25,7 +25,7 @@ public class View {
     }
 
     public void printHelpCommands() {
-        System.out.println(Colors.BLUE + GAME_TEXT.get("Help") + Colors.RESET);
+        System.out.println(GAME_TEXT.get("Help"));
     }
 
     public String printInstructions() {
@@ -54,35 +54,37 @@ public class View {
 
     //------------VIEW MESSAGES------------------------------------------
     public String getItemDescription(String description) {
+
         return String.format(GAME_TEXT.get("ItemDescription"), description);
+
     }
 
     public String getInvalidItemMessage() {
-        return Colors.RED + GAME_TEXT.get("ItemNotFound") + Colors.RESET;
+        return GAME_TEXT.get("ItemNotFound");
     }
 
     public String getInvalidCommandMessage() {
-        return Colors.RED + GAME_TEXT.get("InvalidCommand") + Colors.RESET;
+        return GAME_TEXT.get("InvalidCommand");
     }
 
     public String getInvalidLocationMessage() {
-        return Colors.RED + GAME_TEXT.get("InvalidLocation") + Colors.RESET;
+        return GAME_TEXT.get("InvalidLocation");
     }
 
     public String getSuccessfulRaftBuildMessage() {
-        return Colors.GREEN + GAME_TEXT.get("BuildSuccessful") + Colors.RESET;
+        return GAME_TEXT.get("BuildSuccessful");
     }
 
     public String getNotSuccessfulRaftBuildMessage() {
-        return Colors.RED + GAME_TEXT.get("BuildNotSuccessful") + Colors.RESET;
+        return GAME_TEXT.get("BuildNotSuccessful");
     }
 
     public String getNotInRaftLocationBuildMessage() {
-        return Colors.RED + GAME_TEXT.get("InvalidCraftingLocation") + Colors.RESET;
+        return GAME_TEXT.get("InvalidCraftingLocation");
     }
 
     public String getHelpCommands() {
-        return Colors.BLUE + GAME_TEXT.get("Help") + Colors.RESET;
+        return GAME_TEXT.get("Help");
     }
 
     public String cantGrabItem() {
@@ -90,19 +92,19 @@ public class View {
     }
 
     public String getItemNotCraftable() {
-        return Colors.RED + GAME_TEXT.get("ItemNotCraftable") + Colors.RESET;
+        return GAME_TEXT.get("ItemNotCraftable");
     }
 
     public String getItemNotEdible() {
-        return Colors.RED + GAME_TEXT.get("YouCantEatThat") + Colors.RESET;
+        return GAME_TEXT.get("YouCantEatThat");
     }
 
     public String getSleeping() {
-        return Colors.BLUE + GAME_TEXT.get("Sleep") + Colors.RESET;
+        return GAME_TEXT.get("Sleep");
     }
 
     public String getNoPickUpStamina() {
-        return Colors.RED + GAME_TEXT.get("NotEnoughPickUpStamina") + Colors.RESET;
+        return GAME_TEXT.get("NotEnoughPickUpStamina");
     }
 
     public String getNoDropStamina() {
@@ -110,56 +112,56 @@ public class View {
     }
 
     public String getGameSaved() {
-        return Colors.BLUE + GAME_TEXT.get("GameSaved") + Colors.RESET;
+        return GAME_TEXT.get("GameSaved");
     }
 
     public String getGameSaveFailed() {
-        return Colors.RED + GAME_TEXT.get("GameSaveFailed") + Colors.RESET;
+        return GAME_TEXT.get("GameSaveFailed");
     }
 
     public String getEating() {
-        return Colors.BLUE + GAME_TEXT.get("EatItem") + Colors.RESET;
+        return GAME_TEXT.get("EatItem");
     }
 
     public String getCantEatThat() {
-        return Colors.RED + GAME_TEXT.get("YouCantEatThat") + Colors.RESET;
+        return GAME_TEXT.get("YouCantEatThat");
     }
 
-    public void printCantLoadGame() {
-        System.out.println(Colors.RED + GAME_TEXT.get("NoSavedGame") + Colors.RESET);
+    public String printCantLoadGame() {
+        return GAME_TEXT.get("NoSavedGame");
     }
 
     public String getNoStaminaToMove() {
-        return Colors.RED + GAME_TEXT.get("CantMove") + Colors.RESET;
+        return GAME_TEXT.get("CantMove");
     }
 
     public String getCantEscape() {
-        return Colors.RED + GAME_TEXT.get("CantEscape") + Colors.RESET;
+        return GAME_TEXT.get("CantEscape");
     }
 
     public String getYouWonMessage() {
-        return Colors.GREEN + GAME_TEXT.get("Win") + Colors.RESET;
+        return GAME_TEXT.get("Win");
     }
 
     public String solvedPuzzleMessage() {
-        return Colors.GREEN + GAME_TEXT.get("SolvedPuzzle") + Colors.RESET;
+        return GAME_TEXT.get("SolvedPuzzle");
     }
 
     public String unSolvedPuzzleMessage() {
 
-        return Colors.RED + GAME_TEXT.get("UnSolvedPuzzle") + Colors.RESET;
+        return GAME_TEXT.get("UnSolvedPuzzle");
     }
 
     public String puzzleMessagePrompt() {
-        return Colors.RED + GAME_TEXT.get("PuzzlePrompt") + Colors.RESET;
+        return GAME_TEXT.get("PuzzlePrompt");
     }
 
     public String pitFallPrompt() {
-        return Colors.RED + GAME_TEXT.get("PitFall") + Colors.RESET;
+        return GAME_TEXT.get("PitFall");
     }
 
     public String pitFallEscapePrompt() {
-        return Colors.GREEN + GAME_TEXT.get("PitFallEscape") + Colors.RESET;
+        return GAME_TEXT.get("PitFallEscape");
     }
 
 //    public void clearConsole() {
