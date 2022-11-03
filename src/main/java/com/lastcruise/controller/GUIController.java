@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -132,7 +133,7 @@ public class GUIController {
   }
 
   public void updateView() {
-    view.clearConsole();
+//    view.clearConsole();
     String location = game.getCurrentLocationName();
     String inventory = game.getPlayerInventory().getInventory().keySet().toString();
     String stamina = game.getPlayerStamina();
@@ -148,8 +149,6 @@ public class GUIController {
     updateLocationImg(location);
     updateLocationItems();
     System.out.println(locationItems);
-  }
-
 
     // append additional game messages to the scroll screen
     addGameText(message);
@@ -383,6 +382,34 @@ public class GUIController {
       btn.setOpaque(false);
       btn.setContentAreaFilled(false);
       btn.setBorderPainted(false);
+      btn.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          String[] command = new String[]{"grab", item};
+          try {
+            if (game.getPlayerStaminaInt() < 25) {
+              updateView();
+              mainGameScreen.getDialogueTextArea().append(view.getNoPickUpStamina());
+            } else if (item.equals("log") && !game.getPlayerInventory().getInventory().containsKey("machete")) {
+              updateView();
+              mainGameScreen.getDialogueTextArea().append(view.cantGrabItem());
+            } else {
+              processCommand(command);
+              ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("images/" + item + ".png"));
+              JButton btn = new JButton(img);
+              btn.setOpaque(false);
+              btn.setContentAreaFilled(false);
+              btn.setBorderPainted(false);
+              mainGameScreen.getInventoryPanel().add(btn);
+              mainGameScreen.getItemsPanel().revalidate();
+              mainGameScreen.getItemsPanel().repaint();
+              updateView();
+            }
+          } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+          }
+        }
+      });
       mainGameScreen.getItemsPanel().add(btn);
       mainGameScreen.getItemsPanel().revalidate();
       mainGameScreen.getItemsPanel().repaint();

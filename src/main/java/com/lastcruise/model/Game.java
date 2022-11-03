@@ -76,6 +76,11 @@ public class Game {
         return String.valueOf(player.getStamina());
     }
 
+    @JsonIgnore
+    public int getPlayerStaminaInt() {
+        return (player.getStamina());
+    }
+
     public void moveLocation(String[] direction)
         throws InvalidLocationException, NoEnoughStaminaException {
             player.reduceStaminaMove();

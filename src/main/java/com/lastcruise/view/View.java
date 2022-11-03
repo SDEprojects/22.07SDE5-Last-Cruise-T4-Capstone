@@ -87,7 +87,7 @@ public class View {
     }
 
     public String cantGrabItem() {
-        return Colors.RED + GAME_TEXT.get("CantGrabItem") + Colors.RESET;
+        return GAME_TEXT.get("CantGrabItem");
     }
 
     public String getItemNotCraftable() {
@@ -163,9 +163,9 @@ public class View {
         return Colors.GREEN + GAME_TEXT.get("PitFallEscape") + Colors.RESET;
     }
 
-    public void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
+//    public void clearConsole() {
+//        System.out.print("\033[H\033[2J");
+//        System.out.flush();
+//    }
 
 }
