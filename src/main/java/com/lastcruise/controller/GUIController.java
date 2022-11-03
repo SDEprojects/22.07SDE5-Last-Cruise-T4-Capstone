@@ -14,6 +14,7 @@ import com.lastcruise.model.Player.NoEnoughStaminaException;
 import com.lastcruise.model.PuzzleClient;
 import com.lastcruise.model.SoundEffect;
 import com.lastcruise.view.GameScreen;
+import com.lastcruise.view.PitLayout;
 import com.lastcruise.view.PreludeScreen;
 import com.lastcruise.view.TitleScreen;
 import com.lastcruise.view.View;
@@ -42,6 +43,7 @@ public class GUIController {
   private PreludeScreen intermission = new PreludeScreen();
   // Use callback instead of static methods
   private GameScreen mainGameScreen = new GameScreen();
+  private PitLayout pitScreen = new PitLayout();
 
   // Controller Related Fields
   private final View view = new View();
@@ -148,19 +150,19 @@ public class GUIController {
     updateLocationImg(location);
     updateLocationItems();
     System.out.println(locationItems);
-  }
-
 
     // append additional game messages to the scroll screen
     addGameText(message);
   }
 
   public void updateLocationImg(String location) {
-    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + location +".jpg"));
-    Image image = icon.getImage();
-    Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
-    icon = new ImageIcon(resizeImg);
-    mainGameScreen.getBgImgLabel().setIcon(icon);
+    if (!location.equalsIgnoreCase("pit")) {
+      ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + location +".jpg"));
+      Image image = icon.getImage();
+      Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
+      icon = new ImageIcon(resizeImg);
+      mainGameScreen.getBgImgLabel().setIcon(icon);
+    }
   }
 
 
@@ -175,24 +177,32 @@ public class GUIController {
           // TODO: Adjust PIT to print message elsewhere once panel is decided
           if (game.getCurrentLocationName().equals("PIT")) {
 
+            // If location is pit, load up pit panel screen
+            mainGameScreen.getMainGamePanel().setVisible(false);
+            JPanel pit = pitScreen.getPrimaryPanel();
+            mainFrame.add(pit);
+            mainFrame.pack();
+            mainFrame.setVisible(true);
+
             URL fallSoundUrl = getClass().getResource(
                 AllSounds.ALL_SOUNDS.get("pitFall"));
             SoundEffect.runAudio(fallSoundUrl);
 
-            message = view.pitFallPrompt();
-            updateView();
+            // Show pitFallPrompt to User
+            pitScreen.changePuzzleTextArea(view.pitFallPrompt());
+//            updateView();
 //            updateLocationTimer();
-            message = view.puzzleMessagePrompt();
-            updateView();
-
-            if (puzzleClient.puzzleGenerator()) {
-              message = view.solvedPuzzleMessage();
-            } else {
-              message = view.unSolvedPuzzleMessage();
-              updateView();
-              puzzleClient.puzzlePunishment();
-              message = view.pitFallEscapePrompt();
-            }
+            pitScreen.appendToPuzzleTextArea(view.puzzleMessagePrompt());
+//            message = view.puzzleMessagePrompt();
+//            updateView();
+//            if (puzzleClient.puzzleGenerator()) {
+//              message = view.solvedPuzzleMessage();
+//            } else {
+//              message = view.unSolvedPuzzleMessage();
+//              updateView();
+//              puzzleClient.puzzlePunishment();
+//              message = view.pitFallEscapePrompt();
+//            }
           } else {
             URL runSoundUrl = getClass().getResource(
                 AllSounds.ALL_SOUNDS.get("run"));
@@ -202,10 +212,12 @@ public class GUIController {
         } catch (InvalidLocationException e) {
           message = view.getInvalidLocationMessage();
 
-        } catch (InterruptedException e) {
-          throw new RuntimeException(e);
-
-        } catch (NoEnoughStaminaException e) {
+        }
+//        catch (InterruptedException e) {
+//          throw new RuntimeException(e);
+//
+//        }
+        catch (NoEnoughStaminaException e) {
           message = view.getNoStaminaToMove();
 
         }
