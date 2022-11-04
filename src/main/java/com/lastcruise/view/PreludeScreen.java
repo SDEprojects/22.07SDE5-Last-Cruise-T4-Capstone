@@ -12,7 +12,8 @@ public class PreludeScreen {
   JPanel mainPanel;
   JTextArea mainLabel;
   JFrame testFrame;
-  JButton continueBtn, preludeSettingsBtn;
+  JButton continueBtn, preludeSettingsBtn, helpBtn;
+  private ClassLoader loader = getClass().getClassLoader();
 
   public PreludeScreen() {
     buildPreludeScreen();
@@ -24,18 +25,18 @@ public class PreludeScreen {
     mainPanel.setLayout(null);
     mainPanel.setBackground(Color.BLACK);
 
-    mainLabel = new JTextArea("Testing");
+    mainLabel = new JTextArea();
     mainLabel.setForeground(Color.white);
     mainLabel.setFont(new Font("Monospace", Font.PLAIN, 24));
     mainLabel.setBackground(Color.BLACK);
-    mainLabel.setLineWrap(true);
+    mainLabel.setWrapStyleWord(true);
     mainLabel.setBounds(375, 200, 755, 440);
     mainPanel.add(mainLabel);
 
     continueBtn = new JButton("Continue");
     continueBtn.setBounds(750, 650, 100, 50);
 
-    ImageIcon preludeSettingsBtnImg = new ImageIcon(getClass().getClassLoader().getResource("images/settings.png"));
+    ImageIcon preludeSettingsBtnImg = new ImageIcon(loader.getResource("images/settings.png"));
     preludeSettingsBtn = new JButton(preludeSettingsBtnImg);
     preludeSettingsBtn.setBounds(1400, 15, 65 ,65);
     preludeSettingsBtn.addActionListener(e -> new SettingsScreen());
@@ -45,9 +46,19 @@ public class PreludeScreen {
     preludeSettingsBtn.setBorderPainted(false);
     preludeSettingsBtn.setBorder(null);
 
+    helpBtn = new JButton(new ImageIcon(loader.getResource("images/help.png")));
+    helpBtn.setBounds(1400, 100, 65, 65);
+    helpBtn.setOpaque(false);
+    helpBtn.setFocusPainted(false);
+    helpBtn.setContentAreaFilled(false);
+    helpBtn.setBorderPainted(false);
+    helpBtn.setBorder(null);
+    helpBtn.addActionListener(e -> new HelpScreen());
+
 
     mainPanel.add(preludeSettingsBtn);
     mainPanel.add(continueBtn);
+    mainPanel.add(helpBtn);
   }
 
   public void changeText(String gameText) {

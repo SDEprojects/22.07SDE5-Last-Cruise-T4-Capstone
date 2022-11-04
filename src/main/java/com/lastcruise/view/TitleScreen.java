@@ -21,7 +21,7 @@ public class TitleScreen {
 
   private JLayeredPane titleScreen;
   private JLabel title;
-  private JButton startBtn;
+  private JButton startBtn, helpBtn;
   private JButton loadBtn;
   private JButton settingsBtn;
   private JButton exitButton;
@@ -87,12 +87,22 @@ public class TitleScreen {
     settingsBtn.setBorder(null);
     settingsBtn.addActionListener(e -> new SettingsScreen());
 
+    helpBtn = new JButton(new ImageIcon(loader.getResource("images/help.png")));
+    helpBtn.setBounds(1400, 100, 65, 65);
+    helpBtn.setOpaque(false);
+    helpBtn.setFocusPainted(false);
+    helpBtn.setContentAreaFilled(false);
+    helpBtn.setBorderPainted(false);
+    helpBtn.setBorder(null);
+    helpBtn.addActionListener(e -> new HelpScreen());
+
     titleScreen.add(imgSection, Integer.valueOf(0));
     titleScreen.add(title, Integer.valueOf(2));
     titleScreen.add(startBtn, Integer.valueOf(2));
     titleScreen.add(loadBtn, Integer.valueOf(2));
     titleScreen.add(exitButton, Integer.valueOf(2));
     titleScreen.add(settingsBtn, Integer.valueOf(2));
+    titleScreen.add(helpBtn, Integer.valueOf(2));
   }
 
 
