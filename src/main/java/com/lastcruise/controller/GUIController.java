@@ -44,7 +44,7 @@ public class GUIController {
   private PreludeScreen intermission = new PreludeScreen();
   // Use callback instead of static methods
   private GameScreen mainGameScreen = new GameScreen();
-  private PitLayout pitScreen = new PitLayout();
+  private PitLayout pitScreen;
 
   // Controller Related Fields
   private final View view = new View();
@@ -177,9 +177,9 @@ public class GUIController {
           game.moveLocation(command);
           // TODO: Adjust PIT to print message elsewhere once panel is decided
           if (game.getCurrentLocationName().equals("PIT")) {
-
             // If location is pit, load up pit panel screen
             mainGameScreen.getMainGamePanel().setVisible(false);
+            pitScreen = new PitLayout();
             JPanel pit = pitScreen.getPrimaryPanel();
             mainFrame.add(pit);
             mainFrame.pack();
