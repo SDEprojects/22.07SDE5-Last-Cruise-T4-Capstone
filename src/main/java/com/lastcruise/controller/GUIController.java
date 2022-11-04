@@ -45,24 +45,23 @@ import javax.swing.Timer;
 
 public class GUIController {
 
-  // Primary Window Frame
+  // PRIMARY WINDOW PANEL
   private JFrame mainFrame;
 
-  // Changing Panels
+  // CHANGING PANELS
   private final TitleScreen titleScreen = new TitleScreen();
   private PreludeScreen intermission = new PreludeScreen();
   private GameScreen mainGameScreen = new GameScreen();
+  // PITSCREEN INSTANTIATED WHEN PLAYER ENTERS PIT FOR NEW PUZZLE EACH TIME
   private PitLayout pitScreen;
   private WinScreen winScreen = new WinScreen();
 
-  // Controller Related Fields
+  // CONTROLLER RELATED FIELDS
   private final View view = new View();
-  PuzzleClient puzzleClient = new PuzzleClient();
+  private PuzzleClient puzzleClient = new PuzzleClient();
   private String message;
   private final GameLoader gameLoader = new GameLoader();
   private Game game;
-  private Controller controller = new Controller();
-  private Boolean keepPlaying = true;
   private ClassLoader loader = getClass().getClassLoader();
 
   // CONSTRUCTOR
@@ -86,7 +85,6 @@ public class GUIController {
         throw new RuntimeException(e);
       }
     });
-//    mainGameScreen.getSleepBtn().addActionListener(e -> game.playerSleep());
   }
 
   private void loadTitleScreen() {
@@ -99,6 +97,11 @@ public class GUIController {
     // start game action listener
     titleScreen.getStartBtn().addActionListener(e -> {
       continueToGame();
+      try {
+        this.gameSetUp();
+      } catch (InterruptedException ex) {
+        throw new RuntimeException(ex);
+      }
     });
   }
 
@@ -140,7 +143,6 @@ public class GUIController {
   }
 
   public void updateView() {
-//    view.clearConsole();
     String location = game.getCurrentLocationName();
     String inventory = game.getPlayerInventory().getInventory().keySet().toString();
     String stamina = game.getPlayerStamina();
@@ -526,7 +528,6 @@ public class GUIController {
         break;
       }
       case QUIT: {
-        keepPlaying = false;
         break;
       }
       // MUSIC and SOUND EFFECTS CONTROLS
@@ -581,11 +582,6 @@ public class GUIController {
     }
   }
 
-  public Boolean getKeepPlaying() {
-    return keepPlaying;
-  }
-
-
   public JFrame getMainFrame() {
     return mainFrame;
   }
@@ -594,11 +590,5 @@ public class GUIController {
     return titleScreen;
   }
 
-//  public static void main(String[] args) throws InterruptedException {
-//    GUIController gui = new GUIController();
-//    gui.updateViewGUI("Beach", "25");
-
-//    game.getDialogueTextArea().setText(view.printStory());
-//    gui.setGameText(view.printStory());
 }
 
