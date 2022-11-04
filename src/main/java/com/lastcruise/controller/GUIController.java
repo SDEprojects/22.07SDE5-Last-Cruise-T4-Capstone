@@ -233,6 +233,8 @@ public class GUIController {
                       String desc = game.getPlayerInventory().getInventory().get(item)
                           .getDescription();
                       JFrame frame = new JFrame();
+                      ImageIcon image = new ImageIcon(loader.getResource("images/inventory.png"));
+                      frame.setIconImage(image.getImage());
                       // Make Text Area
                       JDialog jd = new JDialog(frame, "Inventory Item", true);
                       jd.setLayout(null);
@@ -246,8 +248,7 @@ public class GUIController {
 
                       // Make drop button
                       JButton dropBtn = new JButton("Drop");
-                      dropBtn.setBounds(0, 130, 75, 75);
-                      dropBtn.setBackground(Color.darkGray);
+                      dropBtn.setBounds(40, 130, 75, 75);
                       dropBtn.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -275,8 +276,7 @@ public class GUIController {
                       // make eat button if item is edible
                       if (game.getPlayerInventory().getInventory().get(item).getEdible()) {
                         JButton eatBtn = new JButton("Eat");
-                        eatBtn.setBounds(140, 130, 75, 75);
-                        eatBtn.setBackground(Color.darkGray);
+                        eatBtn.setBounds(160, 130, 75, 75);
                         eatBtn.addActionListener(new ActionListener() {
                           String[] command = new String[]{"eat", item};
 
