@@ -3,6 +3,7 @@ package com.lastcruise.view;
 import com.lastcruise.model.Music;
 import com.lastcruise.model.SoundEffect;
 import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,6 +20,8 @@ public class SettingsScreen {
 
   private void buildSettingScreen() {
     JFrame frame = new JFrame();
+    ImageIcon image = new ImageIcon(getClass().getClassLoader().getResource("images/settings.png"));
+    frame.setIconImage(image.getImage());
     dialog = new JDialog(frame, "Settings", true);
     dialog.setLayout(null);
 
@@ -61,7 +64,7 @@ public class SettingsScreen {
     fxUp.addActionListener(e -> SoundEffect.increaseFxVolume());
 
     JButton quit = new JButton("Exit Game");
-    quit.setBounds(110,230,100,30);
+    quit.setBounds(90,230,100,30);
     quit.addActionListener(e -> System.exit(0));
 
     dialog.add(musicControls);

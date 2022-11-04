@@ -9,7 +9,7 @@
   {
     "type": "normal",
     "name": "JUNGLE",
-    "description": "At 6.9 million square kilometers (2.72 million square miles),\n the Maximus jungle is roughly the size of the four contiguous United States and covers some 70 percent of the island.\n A river flows through its middle and the sound of birds perching on a lake nearby can be heard if one listens carefully.\n Hidden in the northern part of the jungle is a rope that can come in handy.  ",
+    "description": "At 6.9 million square kilometers (2.72 million square miles). \n The Maximus jungle is roughly the size of the four contiguous United States and covers some 70 percent of the island.\n A river flows through its middle and the sound of birds perching on a lake nearby can be heard if one listens carefully.\n Hidden in the northern part of the jungle is a rope that can come in handy.  ",
     "itemNames": [
       "log",
       "rope",
@@ -24,7 +24,7 @@
   {
     "type": "normal",
     "name": "LAKE",
-    "description": "The sight of birds hovering, perching on and diving into this crystal-clear body of water is a sight to behold.\n The lake appears to be clean, but be careful, the water is not safe for drinking",
+    "description": "The sight of birds hovering, perching on and diving into this crystal-clear body of water is a sight to behold.\n The lake appears to be clean, but be careful, the water is not safe for drinking.",
     "itemNames": [
       "paddle",
       "fish"
