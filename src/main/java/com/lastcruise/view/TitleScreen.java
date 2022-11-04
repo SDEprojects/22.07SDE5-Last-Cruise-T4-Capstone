@@ -7,6 +7,7 @@ import com.lastcruise.view.View;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.function.Consumer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,6 +25,8 @@ public class TitleScreen {
   private JButton loadBtn;
   private JButton settingsBtn;
   private JButton exitButton;
+  private ClassLoader loader = getClass().getClassLoader();
+  private Consumer<String[]> actionCallback;
 
   Music music = new Music();
   Controller controller = new Controller();
@@ -37,7 +40,7 @@ public class TitleScreen {
   private void buildTitleScreen() {
     titleScreen = new JLayeredPane();
 
-    ImageIcon titleScreenImg = new ImageIcon(getClass().getClassLoader().getResource("images/homescreen.jpg"));
+    ImageIcon titleScreenImg = new ImageIcon(loader.getResource("images/homescreen.jpg"));
     Image image = titleScreenImg.getImage();
     Image newImage = image.getScaledInstance(1500, 800, Image.SCALE_SMOOTH);
     titleScreenImg = new ImageIcon(newImage);
@@ -65,13 +68,16 @@ public class TitleScreen {
     loadBtn = new JButton("Load Game");
     loadBtn.setBounds(825, 575, 225, 75);
     loadBtn.setFont(new Font("Monospace", Font.PLAIN, 20));
+    loadBtn.addActionListener(e -> {
+      String[] commands = new String[]{};
+    });
 
     exitButton = new JButton("Exit");
     exitButton.setBounds(724,675,100,50);
     exitButton.addActionListener(e -> System.exit(0));
     exitButton.setFont(new Font("Monospace", Font.PLAIN, 15));
 
-    ImageIcon settings = new ImageIcon(getClass().getClassLoader().getResource("images/settings.png"));
+    ImageIcon settings = new ImageIcon(loader.getResource("images/settings.png"));
     settingsBtn = new JButton(settings);
     settingsBtn.setBounds(1400, 15, 65, 65);
     settingsBtn.setOpaque(false);

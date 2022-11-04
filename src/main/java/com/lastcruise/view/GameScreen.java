@@ -25,11 +25,11 @@ public class GameScreen {
   private JTextArea dialogueTextArea;
   private JFrame frame = new JFrame();
   private JScrollPane text;
-  private JButton sleepBtn;
+  private JButton sleepBtn, gameSettingsBtn, saveGameBtn;
 
   private View view = new View();
   private Consumer<String[]> actionCallback;
-
+  private ClassLoader loader = getClass().getClassLoader();
   public GameScreen() {
     buildGameScreen();
   }
@@ -42,7 +42,7 @@ public class GameScreen {
     mainGamePanel.setLayout(null);
 
     // Create ImageIcon for dialogue container
-    ImageIcon scroll = new ImageIcon(getClass().getClassLoader().getResource("images/scroll.jpg"));
+    ImageIcon scroll = new ImageIcon(loader.getResource("images/scroll.jpg"));
     // Convert to awt image to resize
     Image image1 = scroll.getImage();
     // Set new dimensions
@@ -61,42 +61,19 @@ public class GameScreen {
     dialogueImgPanel = new JPanel();
     dialogueImgPanel.setBounds(10, 50, 1150, 275);
 
-//    dialoguePanel.add(dialogueImgPanel, Integer.valueOf(0));
 
     // Add image to the img panel, set z-index to 0 "bottom"
     dialogueImgPanel.add(dialogueImg);
     dialoguePanel.add(dialogueImgPanel, Integer.valueOf(0));
 
-    // Create new panel to hold text on top of scroll img
-//    dialogueTextPanel = new JPanel();
-//    dialogueTextPanel.setOpaque(false);
-//    dialogueTextPanel.setBounds(15, 50, 900, 125);
-//    dialogueTextPanel.setBorder(BorderFactory.createLineBorder(Color.black, 5));
 
     dialogueTextArea = new JTextArea();
     dialogueTextArea.setBounds(65, 65, 1103, 175);
-//    dialogueTextArea.setOpaque(false);
-//    dialogueTextArea.setText(view.printStory());
     dialogueTextArea.setOpaque(false);
     dialogueTextArea.setEditable(false);
     dialogueTextArea.setLineWrap(true);
-//    dialogueTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+
     dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
-
-//    text = new JScrollPane(dialogueTextArea);
-//    text.setBounds(15,50,900,125);
-////    text.getViewport().setOpaque(false);
-////    text.setOpaque(false);
-////    dialogueTextArea.add(text);
-//    dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
-
-    // Create label to actually hold text content
-//    dialogueText = new JLabel("Hello world");
-//    dialogueText.setBorder(BorderFactory.createLineBorder(Color.black, 4));
-//    // Add text label to text panel/ container
-//    dialogueTextPanel.add(dialogueText);
-//    // Add text container to dialogue img panel, set z-index to 1 to sit above scroll img
-//    dialoguePanel.add(dialogueTextPanel, Integer.valueOf(1));
 
     // Adding dialogue container to mainGamePanel
     mainGamePanel.add(dialoguePanel);
@@ -106,39 +83,6 @@ public class GameScreen {
     itemsPanel.setBounds(10, 470, 1150, 75);
     itemsPanel.setBorder(BorderFactory.createLineBorder(Color.black, 4));
 //    itemsPanel.setBackground(Color.black);
-    // Temporary images
-    // TODO: Put getClassLoader stuff in a variable
-    ImageIcon img1 = new ImageIcon(getClass().getClassLoader().getResource("images/banana.png"));
-    ImageIcon img2 = new ImageIcon(getClass().getClassLoader().getResource("images/paddle.png"));
-    ImageIcon img3 = new ImageIcon(getClass().getClassLoader().getResource("images/mushroom.png"));
-    ImageIcon img4 = new ImageIcon(getClass().getClassLoader().getResource("images/berries.png"));
-
-    JButton btn1 = new JButton(img1);
-    btn1.setOpaque(false);
-    btn1.setContentAreaFilled(false);
-    btn1.setBorderPainted(false);
-    // attach to button listener callback
-    // action is button press
-
-    JButton btn2 = new JButton(img2);
-    btn2.setOpaque(false);
-    btn2.setContentAreaFilled(false);
-    btn2.setBorderPainted(false);
-
-    JButton btn3 = new JButton(img3);
-    btn3.setOpaque(false);
-    btn3.setContentAreaFilled(false);
-    btn3.setBorderPainted(false);
-
-    JButton btn4 = new JButton(img4);
-    btn4.setOpaque(false);
-    btn4.setContentAreaFilled(false);
-    btn4.setBorderPainted(false);
-
-//    itemsPanel.add(btn1);
-//    itemsPanel.add(btn2);
-//    itemsPanel.add(btn3);
-//    itemsPanel.add(btn4);
 
     // add location items to main panel
     mainGamePanel.add(itemsPanel);
@@ -167,8 +111,8 @@ public class GameScreen {
     // Create panel to eventually house map/ compass or player info
     mapPanel = new JPanel();
     mapPanel.setLayout(null);
-    mapPanel.setBounds(1180, 10, 300, 300);
-    // mapPanel.setBackground(Color.black);
+    mapPanel.setBounds(1180, 90, 300, 210);
+//     mapPanel.setBackground(Color.black);
     // TODO: Add labels to panel
     locationLabel = new JLabel();
     locationLabel.setBackground(Color.PINK);
@@ -181,17 +125,43 @@ public class GameScreen {
     staminaLabel.setText("Stamina!");
     mapPanel.add(staminaLabel);
 
-    sleepBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/sleep.png")));
+    sleepBtn = new JButton(new ImageIcon(loader.getResource("images/sleep.png")));
     sleepBtn.setOpaque(false);
+//    sleepBtn.setFocusPainted(false);
     sleepBtn.setContentAreaFilled(false);
     sleepBtn.setBorderPainted(false);
-    sleepBtn.setBounds(36, 230, 250, 60);
+    sleepBtn.setBorder(null);
+    sleepBtn.setBounds(34, 150, 250, 60);
     sleepBtn.addActionListener(e -> {
       String[] commands = new String[]{"sleep"};
       actionCallback.accept(commands);
     });
 
+    gameSettingsBtn = new JButton(new ImageIcon(loader.getResource("images/settings.png")));
+    gameSettingsBtn.setBounds(1400, 15, 65, 65);
+    gameSettingsBtn.setOpaque(false);
+    gameSettingsBtn.setFocusPainted(false);
+    gameSettingsBtn.setContentAreaFilled(false);
+    gameSettingsBtn.setBorderPainted(false);
+    gameSettingsBtn.setBorder(null);
+    gameSettingsBtn.addActionListener(e -> new SettingsScreen());
+
+    saveGameBtn = new JButton(new ImageIcon(loader.getResource("images/save.png")));
+    saveGameBtn.setBounds(1300, 15, 65, 65);
+    saveGameBtn.setOpaque(false);
+    saveGameBtn.setFocusPainted(false);
+    saveGameBtn.setContentAreaFilled(false);
+    saveGameBtn.setBorderPainted(false);
+    saveGameBtn.setBorder(null);
+    saveGameBtn.addActionListener(e -> {
+      String[] commands = new String[]{"save", "game"};
+      actionCallback.accept(commands);
+    });
+
+    mainGamePanel.add(gameSettingsBtn);
+    mainGamePanel.add(saveGameBtn);
     mapPanel.add(sleepBtn);
+
 
     // Add map to main panel
     mainGamePanel.add(mapPanel);
@@ -202,46 +172,8 @@ public class GameScreen {
 
     inventoryPanel.setBackground(Color.darkGray);
 
-    //Temporary images
-    ImageIcon img5 = new ImageIcon(getClass().getClassLoader().getResource("images/fish.png"));
-    ImageIcon img6 = new ImageIcon(getClass().getClassLoader().getResource("images/cloth.png"));
-    ImageIcon img7 = new ImageIcon(getClass().getClassLoader().getResource("images/log.png"));
-    ImageIcon img8 = new ImageIcon(getClass().getClassLoader().getResource("images/machete.png"));
-    ImageIcon img9 = new ImageIcon(getClass().getClassLoader().getResource("images/steelpipe.png"));
-    ImageIcon img10 = new ImageIcon(getClass().getClassLoader().getResource("images/rope.png"));
-
-    JButton btn5 = new JButton(img5);
-    btn5.setOpaque(false);
-    btn5.setContentAreaFilled(false);
-    btn5.setBorderPainted(false);
-
-    JButton btn6 = new JButton(img6);
-    btn6.setOpaque(false);
-    btn6.setContentAreaFilled(false);
-    btn6.setBorderPainted(false);
-
-    JButton btn7 = new JButton(img7);
-    btn7.setOpaque(false);
-    btn7.setContentAreaFilled(false);
-    btn7.setBorderPainted(false);
-
-    JButton btn8 = new JButton(img8);
-    btn8.setOpaque(false);
-    btn8.setContentAreaFilled(false);
-    btn8.setBorderPainted(false);
-
-    JButton btn9 = new JButton(img9);
-    btn9.setOpaque(false);
-    btn9.setContentAreaFilled(false);
-    btn9.setBorderPainted(false);
-
-    JButton btn10 = new JButton(img10);
-    btn10.setOpaque(false);
-    btn10.setContentAreaFilled(false);
-    btn10.setBorderPainted(false);
-
     // Adding directional buttons w/ event listeners (connected in GUIController)
-    JButton northBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/up.png")));
+    JButton northBtn = new JButton(new ImageIcon(loader.getResource("images/up.png")));
     northBtn.setOpaque(false);
     northBtn.setContentAreaFilled(false);
     northBtn.setBorderPainted(false);
@@ -252,7 +184,7 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    JButton southBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/down.png")));
+    JButton southBtn = new JButton(new ImageIcon(loader.getResource("images/down.png")));
     southBtn.setOpaque(false);
     southBtn.setContentAreaFilled(false);
     southBtn.setBorderPainted(false);
@@ -263,7 +195,7 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    JButton eastBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/right.png")));
+    JButton eastBtn = new JButton(new ImageIcon(loader.getResource("images/right.png")));
     eastBtn.setOpaque(false);
     eastBtn.setContentAreaFilled(false);
     eastBtn.setBorderPainted(false);
@@ -274,7 +206,7 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    JButton westBtn = new JButton(new ImageIcon(getClass().getClassLoader().getResource("images/left.png")));
+    JButton westBtn = new JButton(new ImageIcon(loader.getResource("images/left.png")));
     westBtn.setOpaque(false);
     westBtn.setContentAreaFilled(false);
     westBtn.setBorderPainted(false);
@@ -285,23 +217,8 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-//    inventoryPanel.add(btn1);
-//    inventoryPanel.add(btn2);
-//    inventoryPanel.add(btn3);
-//    inventoryPanel.add(btn4);
-//    inventoryPanel.add(btn5);
-//    inventoryPanel.add(btn6);
-//    inventoryPanel.add(btn7);
-//    inventoryPanel.add(btn8);
-//    inventoryPanel.add(btn9);
-//    inventoryPanel.add(btn10);
-
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
-//    frame.setSize(1500, 800);
-//    frame.add(mainGamePanel);
-//    frame.setVisible(true);
-
   }
 
 
@@ -368,12 +285,6 @@ public class GameScreen {
   public JButton getSleepBtn() {
     return sleepBtn;
   }
-
-// test method
-//  public static void main(String[] args) {
-//    GameScreen screen = new GameScreen();
-//    screen.updateStatus("Merry", "Christmas");
-//  }
 
 }
 
