@@ -30,7 +30,7 @@
   },
   {
     "name": "raft",
-    "description": "raft description",
+    "description": "a gorgeous hand-made work of art",
     "required": ["log","cloth","rope","steelpipe","paddle"]
   },
   {

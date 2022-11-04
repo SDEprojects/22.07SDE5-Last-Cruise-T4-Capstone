@@ -25,7 +25,7 @@ public class GameScreen {
   private JTextArea dialogueTextArea;
   private JFrame frame = new JFrame();
   private JScrollPane text;
-  private JButton sleepBtn, gameSettingsBtn, saveGameBtn, helpBtn;
+  private JButton sleepBtn, gameSettingsBtn, saveGameBtn, helpBtn, craftBtn;
 
   private View view = new View();
   private Consumer<String[]> actionCallback;
@@ -125,15 +125,28 @@ public class GameScreen {
     staminaLabel.setText("Stamina!");
     mapPanel.add(staminaLabel);
 
+    // TODO: Move sleep button to left and add craft button
     sleepBtn = new JButton(new ImageIcon(loader.getResource("images/sleep.png")));
     sleepBtn.setOpaque(false);
 //    sleepBtn.setFocusPainted(false);
     sleepBtn.setContentAreaFilled(false);
     sleepBtn.setBorderPainted(false);
     sleepBtn.setBorder(null);
-    sleepBtn.setBounds(34, 150, 250, 60);
+    sleepBtn.setBounds(60, 150, 64, 60);
     sleepBtn.addActionListener(e -> {
       String[] commands = new String[]{"sleep"};
+      actionCallback.accept(commands);
+    });
+
+    craftBtn = new JButton(new ImageIcon(loader.getResource("images/craft.png")));
+    craftBtn.setOpaque(false);
+//    sleepBtn.setFocusPainted(false);
+    craftBtn.setContentAreaFilled(false);
+    craftBtn.setBorderPainted(false);
+    craftBtn.setBorder(null);
+    craftBtn.setBounds(160, 150, 64, 60);
+    craftBtn.addActionListener(e -> {
+      String[] commands = new String[]{"craft", "raft"};
       actionCallback.accept(commands);
     });
 
@@ -171,6 +184,7 @@ public class GameScreen {
     mainGamePanel.add(gameSettingsBtn);
     mainGamePanel.add(saveGameBtn);
     mapPanel.add(sleepBtn);
+    mapPanel.add(craftBtn);
     mainGamePanel.add(helpBtn);
 
 
@@ -230,6 +244,12 @@ public class GameScreen {
 
     // Add inventory panel to main panel
     mainGamePanel.add(inventoryPanel);
+
+//    // Temporary Testing Frame
+//    frame.setSize(1500, 800);
+//    frame.add(mainGamePanel);
+//    frame.setVisible(true);
+//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
 
@@ -296,6 +316,10 @@ public class GameScreen {
   public JButton getSleepBtn() {
     return sleepBtn;
   }
+
+//  public static void main(String[] args) {
+//    GameScreen test = new GameScreen();
+//  }
 
 }
 

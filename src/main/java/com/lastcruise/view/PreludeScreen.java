@@ -30,11 +30,13 @@ public class PreludeScreen {
     mainLabel.setFont(new Font("Monospace", Font.PLAIN, 24));
     mainLabel.setBackground(Color.BLACK);
     mainLabel.setWrapStyleWord(true);
+    mainLabel.setLineWrap(true);
     mainLabel.setBounds(375, 200, 755, 440);
     mainPanel.add(mainLabel);
 
     continueBtn = new JButton("Continue");
-    continueBtn.setBounds(750, 650, 100, 50);
+    continueBtn.setBounds(720, 650, 100, 50);
+    continueBtn.setEnabled(false);
 
     ImageIcon preludeSettingsBtnImg = new ImageIcon(loader.getResource("images/settings.png"));
     preludeSettingsBtn = new JButton(preludeSettingsBtnImg);
