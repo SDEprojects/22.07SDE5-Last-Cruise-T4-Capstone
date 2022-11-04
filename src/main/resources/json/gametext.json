@@ -16,7 +16,7 @@
   "InvalidCraftingLocation": "You are not in a crafting location",
   "CantGrabItem": "\n\nYou need something else to grab that item",
   "ItemNotCraftable": "Item not craftable.",
-  "CantEscape" : "You cannot escape without a raft!",
+  "CantEscape" : "\n\nYou cannot escape without a raft!",
   "Win": "Congratulations! You've escaped this island!",
   "SolvedPuzzle": "\n\nCongratulations! You solved the puzzle! Continue in your search",
   "UnSolvedPuzzle": "\n\nhaha :) You are wrong! you will be stuck here for a century!!",

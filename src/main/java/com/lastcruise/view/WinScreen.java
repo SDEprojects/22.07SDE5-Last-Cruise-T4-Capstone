@@ -22,12 +22,8 @@ public class WinScreen {
   private JRadioButton yesPlay;
   private JRadioButton noPLay;
   private JLabel photoLabel;
-  private Consumer<Boolean> actionCallback;
   ActionListener endGame = e -> System.exit(0);
-  ActionListener playAgain = e -> {
-    Boolean decision = true;
-    actionCallback.accept(decision);
-  };
+
 
   public WinScreen() {
     JPanel primary = primaryPanel;
@@ -82,11 +78,5 @@ public class WinScreen {
     return noPLay;
   }
 
-  public void setActionCallback(Consumer<Boolean> actionCallback) {
-    this.actionCallback = actionCallback;
-  }
 
-//  public static void main(String[] args) {
-//    WinScreen screen = new WinScreen();
-//  }
 }

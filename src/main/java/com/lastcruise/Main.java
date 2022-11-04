@@ -1,10 +1,8 @@
 package com.lastcruise;
 
 import com.lastcruise.controller.GUIController;
-import com.lastcruise.model.AllSounds;
-import com.lastcruise.model.Music;
 import java.io.IOException;
-import java.net.URL;
+
 
 public class Main {
 
