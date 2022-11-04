@@ -25,7 +25,7 @@ public class GameScreen {
   private JTextArea dialogueTextArea;
   private JFrame frame = new JFrame();
   private JScrollPane text;
-  private JButton sleepBtn, gameSettingsBtn, saveGameBtn;
+  private JButton sleepBtn, gameSettingsBtn, saveGameBtn, helpBtn;
 
   private View view = new View();
   private Consumer<String[]> actionCallback;
@@ -158,9 +158,20 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
+    helpBtn = new JButton(new ImageIcon(loader.getResource("images/help.png")));
+    helpBtn.setBounds(1200, 15, 65, 65);
+    helpBtn.setOpaque(false);
+    helpBtn.setFocusPainted(false);
+    helpBtn.setContentAreaFilled(false);
+    helpBtn.setBorderPainted(false);
+    helpBtn.setBorder(null);
+    helpBtn.addActionListener(e -> new HelpScreen());
+
+
     mainGamePanel.add(gameSettingsBtn);
     mainGamePanel.add(saveGameBtn);
     mapPanel.add(sleepBtn);
+    mainGamePanel.add(helpBtn);
 
 
     // Add map to main panel
