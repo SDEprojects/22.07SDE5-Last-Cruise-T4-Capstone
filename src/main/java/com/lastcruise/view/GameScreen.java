@@ -1,33 +1,28 @@
 package com.lastcruise.view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class GameScreen {
 
-  // TODO: Enforce encapsulation (making things private),
-  //  Create update screen method to update status stuff
-  private JPanel mainGamePanel, itemsPanel, mapPanel, inventoryPanel, dialogueImgPanel, dialogueTextPanel, bgImgPanel;
-  private JLabel dialoguePanelText, dialogueText, locationLabel, staminaLabel, bgImgLabel;
-  private JLayeredPane dialoguePanel, backgroundImgPane;
-  private ImageIcon bgImg;
+  private JPanel mainGamePanel, itemsPanel, inventoryPanel, dialogueImgPanel, bgImgPanel;
+  private JLabel locationLabel, staminaLabel, bgImgLabel, playerStatusImg;
+  private JLayeredPane dialoguePanel, backgroundImgPane, playerStatusPane;
+  private ImageIcon bgImg, stoneImg;
   private JTextArea dialogueTextArea;
-  private JFrame frame = new JFrame();
-  private JScrollPane text;
-  private JButton sleepBtn, gameSettingsBtn, saveGameBtn, helpBtn, craftBtn;
 
-  private View view = new View();
+  private JButton sleepBtn, gameSettingsBtn, saveGameBtn, helpBtn, craftBtn, northBtn, southBtn, eastBtn, westBtn;
+
   private Consumer<String[]> actionCallback;
   private ClassLoader loader = getClass().getClassLoader();
   public GameScreen() {
@@ -42,7 +37,7 @@ public class GameScreen {
     mainGamePanel.setLayout(null);
 
     // Create ImageIcon for dialogue container
-    ImageIcon scroll = new ImageIcon(loader.getResource("images/scroll.jpg"));
+    ImageIcon scroll = new ImageIcon(loader.getResource("images/scroll.png"));
     // Convert to awt image to resize
     Image image1 = scroll.getImage();
     // Set new dimensions
@@ -55,101 +50,101 @@ public class GameScreen {
     // Create initial layered pane to display text on top of the scroll image
     dialoguePanel = new JLayeredPane();
     dialoguePanel.setBounds(10, 505, 1150, 275);
-//    dialoguePanel.setBackground(Color.magenta);
 
     // Create container/ panel to hold scroll img
     dialogueImgPanel = new JPanel();
     dialogueImgPanel.setBounds(10, 50, 1150, 275);
 
-
     // Add image to the img panel, set z-index to 0 "bottom"
     dialogueImgPanel.add(dialogueImg);
     dialoguePanel.add(dialogueImgPanel, Integer.valueOf(0));
 
-
+    // Create TextArea to overlay the scroll image
     dialogueTextArea = new JTextArea();
     dialogueTextArea.setBounds(65, 65, 1103, 175);
     dialogueTextArea.setOpaque(false);
     dialogueTextArea.setEditable(false);
     dialogueTextArea.setLineWrap(true);
-
     dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
-
-    // Adding dialogue container to mainGamePanel
-    mainGamePanel.add(dialoguePanel);
 
     // Create items in location display panel
     itemsPanel = new JPanel(new GridLayout(1, 4));
     itemsPanel.setBounds(10, 470, 1150, 75);
     itemsPanel.setBorder(BorderFactory.createLineBorder(Color.black, 4));
-//    itemsPanel.setBackground(Color.black);
 
-    // add location items to main panel
-    mainGamePanel.add(itemsPanel);
-
-    bgImg = new ImageIcon(getClass().getClassLoader().getResource("images/BEACH.jpg"));
+    // Image to be used for background image
+    bgImg = new ImageIcon(loader.getResource("images/BEACH.jpg"));
     Image image = bgImg.getImage();
     Image newBgImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
     bgImg = new ImageIcon(newBgImg);
-    // Image to be used for background image
     bgImgLabel = new JLabel(bgImg);
-//    bgImgLabel.setIcon(jungle);
 
-
-    // Create panel to house the location background image
+    // Create pane to house the location background image and directional arrows
     backgroundImgPane = new JLayeredPane();
     backgroundImgPane.setBounds(10, 10, 1150, 455);
 
+    // Add background image to panel
     bgImgPanel = new JPanel();
     bgImgPanel.setBounds(10, 10, 1150, 455);
     bgImgPanel.add(bgImgLabel);
     backgroundImgPane.add(bgImgPanel, Integer.valueOf(0));
 
-    // Add background image panel to main panel
-    mainGamePanel.add(backgroundImgPane);
+    // Create pane to house stone background, stamina, current location, sleep and eat btns
+    playerStatusPane = new JLayeredPane();
+    playerStatusPane.setBounds(1180,90,300,230);
 
-    // Create panel to eventually house map/ compass or player info
-    mapPanel = new JPanel();
-    mapPanel.setLayout(null);
-    mapPanel.setBounds(1180, 90, 300, 210);
-//     mapPanel.setBackground(Color.black);
-    // TODO: Add labels to panel
+    // Create and resize stone img
+    stoneImg = new ImageIcon(loader.getResource("images/stone.png"));
+    Image stone = stoneImg.getImage();
+    Image resizeStone = stone.getScaledInstance(300,230, Image.SCALE_SMOOTH);
+    stoneImg= new ImageIcon(resizeStone);
+
+    // Label that houses stone img
+    playerStatusImg = new JLabel(stoneImg);
+    playerStatusImg.setSize(300,230);
+    playerStatusPane.add(playerStatusImg, Integer.valueOf(0));
+
+    // Create label to display current location; dynamically updated in GUIController
     locationLabel = new JLabel();
-    locationLabel.setBackground(Color.PINK);
-    locationLabel.setBounds(10, 10, 300, 50);
-    locationLabel.setText("Location!");
-    mapPanel.add(locationLabel);
+    locationLabel.setBounds(30, 10, 300, 50);
+    locationLabel.setFont(new Font("Serif", Font.BOLD, 18));
+    locationLabel.setForeground(Color.white);
+    playerStatusPane.add(locationLabel, Integer.valueOf(1));
 
+    // Create label to display players stamina; dynamically updated in GUIController
     staminaLabel = new JLabel();
-    staminaLabel.setBounds(10, 60, 300, 50);
-    staminaLabel.setText("Stamina!");
-    mapPanel.add(staminaLabel);
+    staminaLabel.setBounds(30, 60, 300, 50);
+    staminaLabel.setFont(new Font("Serif", Font.BOLD, 18));
+    staminaLabel.setForeground(Color.white);
+    playerStatusPane.add(staminaLabel, Integer.valueOf(1));
 
-    // TODO: Move sleep button to left and add craft button
+    // Create btn for sleep logic
     sleepBtn = new JButton(new ImageIcon(loader.getResource("images/sleep.png")));
     sleepBtn.setOpaque(false);
-//    sleepBtn.setFocusPainted(false);
     sleepBtn.setContentAreaFilled(false);
     sleepBtn.setBorderPainted(false);
     sleepBtn.setBorder(null);
-    sleepBtn.setBounds(60, 150, 64, 60);
+    sleepBtn.setBounds(60, 140, 64, 60);
     sleepBtn.addActionListener(e -> {
       String[] commands = new String[]{"sleep"};
       actionCallback.accept(commands);
     });
+    playerStatusPane.add(sleepBtn, Integer.valueOf(1));
 
+    // Create btn for eat logic
     craftBtn = new JButton(new ImageIcon(loader.getResource("images/craft.png")));
     craftBtn.setOpaque(false);
-//    sleepBtn.setFocusPainted(false);
     craftBtn.setContentAreaFilled(false);
     craftBtn.setBorderPainted(false);
     craftBtn.setBorder(null);
-    craftBtn.setBounds(160, 150, 64, 60);
+    craftBtn.setBounds(160, 140, 64, 60);
     craftBtn.addActionListener(e -> {
       String[] commands = new String[]{"craft", "raft"};
       actionCallback.accept(commands);
     });
+    playerStatusPane.add(craftBtn, Integer.valueOf(1));
 
+    // Create btn for settings screen
     gameSettingsBtn = new JButton(new ImageIcon(loader.getResource("images/settings.png")));
     gameSettingsBtn.setBounds(1400, 15, 65, 65);
     gameSettingsBtn.setOpaque(false);
@@ -159,6 +154,7 @@ public class GameScreen {
     gameSettingsBtn.setBorder(null);
     gameSettingsBtn.addActionListener(e -> new SettingsScreen());
 
+    // Create btn for save game logic
     saveGameBtn = new JButton(new ImageIcon(loader.getResource("images/save.png")));
     saveGameBtn.setBounds(1300, 15, 65, 65);
     saveGameBtn.setOpaque(false);
@@ -171,6 +167,7 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
+    // Create btn for help screen
     helpBtn = new JButton(new ImageIcon(loader.getResource("images/help.png")));
     helpBtn.setBounds(1200, 15, 65, 65);
     helpBtn.setOpaque(false);
@@ -181,24 +178,13 @@ public class GameScreen {
     helpBtn.addActionListener(e -> new HelpScreen());
 
 
-    mainGamePanel.add(gameSettingsBtn);
-    mainGamePanel.add(saveGameBtn);
-    mapPanel.add(sleepBtn);
-    mapPanel.add(craftBtn);
-    mainGamePanel.add(helpBtn);
-
-
-    // Add map to main panel
-    mainGamePanel.add(mapPanel);
-
     // Create panel to display players inventory
     inventoryPanel = new JPanel(new GridLayout(4, 3));
     inventoryPanel.setBounds(1180, 320, 300, 430);
-
     inventoryPanel.setBackground(Color.darkGray);
 
     // Adding directional buttons w/ event listeners (connected in GUIController)
-    JButton northBtn = new JButton(new ImageIcon(loader.getResource("images/up.png")));
+    northBtn = new JButton(new ImageIcon(loader.getResource("images/up.png")));
     northBtn.setOpaque(false);
     northBtn.setContentAreaFilled(false);
     northBtn.setBorderPainted(false);
@@ -209,7 +195,7 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    JButton southBtn = new JButton(new ImageIcon(loader.getResource("images/down.png")));
+    southBtn = new JButton(new ImageIcon(loader.getResource("images/down.png")));
     southBtn.setOpaque(false);
     southBtn.setContentAreaFilled(false);
     southBtn.setBorderPainted(false);
@@ -220,7 +206,7 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    JButton eastBtn = new JButton(new ImageIcon(loader.getResource("images/right.png")));
+    eastBtn = new JButton(new ImageIcon(loader.getResource("images/right.png")));
     eastBtn.setOpaque(false);
     eastBtn.setContentAreaFilled(false);
     eastBtn.setBorderPainted(false);
@@ -231,7 +217,7 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    JButton westBtn = new JButton(new ImageIcon(loader.getResource("images/left.png")));
+    westBtn = new JButton(new ImageIcon(loader.getResource("images/left.png")));
     westBtn.setOpaque(false);
     westBtn.setContentAreaFilled(false);
     westBtn.setBorderPainted(false);
@@ -242,14 +228,15 @@ public class GameScreen {
       actionCallback.accept(commands);
     });
 
-    // Add inventory panel to main panel
+    mainGamePanel.add(gameSettingsBtn);
+    mainGamePanel.add(saveGameBtn);
+    mainGamePanel.add(helpBtn);
+    mainGamePanel.add(backgroundImgPane);
+    mainGamePanel.add(itemsPanel);
+    mainGamePanel.add(dialoguePanel);
     mainGamePanel.add(inventoryPanel);
+    mainGamePanel.add(playerStatusPane);
 
-//    // Temporary Testing Frame
-//    frame.setSize(1500, 800);
-//    frame.add(mainGamePanel);
-//    frame.setVisible(true);
-//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
 
@@ -261,29 +248,15 @@ public class GameScreen {
     return dialogueTextArea;
   }
 
-  public ImageIcon getBgImg() {
-    return bgImg;
-  }
-
-  public void setBgImg(ImageIcon bgImg) {
-    this.bgImg = bgImg;
-  }
-
   public JPanel getMainGamePanel() {
     return mainGamePanel;
   }
 
-  public JLayeredPane getBgImgPanel() {
-    return backgroundImgPane;
-  }
 
   public JPanel getItemsPanel() {
     return itemsPanel;
   }
 
-  public JPanel getMapPanel() {
-    return mapPanel;
-  }
 
   public JPanel getInventoryPanel() {
     return inventoryPanel;
@@ -293,33 +266,13 @@ public class GameScreen {
     return locationLabel;
   }
 
-  public void setLocationLabel(JLabel locationLabel) {
-    this.locationLabel = locationLabel;
-  }
-
   public JLabel getStaminaLabel() {
     return staminaLabel;
-  }
-
-  public void setStaminaLabel(JLabel staminaLabel) {
-    this.staminaLabel = staminaLabel;
-  }
-
-  public Consumer<String[]> getActionCallback() {
-    return actionCallback;
   }
 
   public void setActionCallback(Consumer<String[]> actionCallback) {
     this.actionCallback = actionCallback;
   }
-
-  public JButton getSleepBtn() {
-    return sleepBtn;
-  }
-
-//  public static void main(String[] args) {
-//    GameScreen test = new GameScreen();
-//  }
 
 }
 

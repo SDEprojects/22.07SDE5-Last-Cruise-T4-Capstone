@@ -148,8 +148,8 @@ public class GUIController {
     String locationItems = game.getCurrentLocationItems().keySet().toString();
 
     // update GUI View with current location and Stamina
-    mainGameScreen.getLocationLabel().setText(location);
-    mainGameScreen.getStaminaLabel().setText(stamina);
+    mainGameScreen.getLocationLabel().setText("Current Location:\n" + location);
+    mainGameScreen.getStaminaLabel().setText("Stamina:\n" + stamina);
     mainGameScreen.getDialogueTextArea().setText(locationDesc);
 
     // Updates GameScreen Location image
