@@ -25,6 +25,9 @@ public class GameScreen {
 
   private Consumer<String[]> actionCallback;
   private ClassLoader loader = getClass().getClassLoader();
+
+
+
   public GameScreen() {
     buildGameScreen();
   }
@@ -61,15 +64,17 @@ public class GameScreen {
 
     // Create TextArea to overlay the scroll image
     dialogueTextArea = new JTextArea();
-    dialogueTextArea.setBounds(65, 65, 1103, 175);
+    dialogueTextArea.setBounds(70, 70, 1103, 175);
     dialogueTextArea.setOpaque(false);
     dialogueTextArea.setEditable(false);
     dialogueTextArea.setLineWrap(true);
+    dialogueTextArea.setFont(new Font("Serif", Font.BOLD, 16));
     dialoguePanel.add(dialogueTextArea, Integer.valueOf(2));
 
     // Create items in location display panel
     itemsPanel = new JPanel(new GridLayout(1, 4));
-    itemsPanel.setBounds(10, 470, 1150, 75);
+    itemsPanel.setBounds(17, 470, 1145, 75);
+    itemsPanel.setBackground(Color.LIGHT_GRAY);
     itemsPanel.setBorder(BorderFactory.createLineBorder(Color.black, 4));
 
     // Image to be used for background image
@@ -165,6 +170,7 @@ public class GameScreen {
     saveGameBtn.addActionListener(e -> {
       String[] commands = new String[]{"save", "game"};
       actionCallback.accept(commands);
+
     });
 
     // Create btn for help screen

@@ -12,44 +12,12 @@ public class View {
         GAME_TEXT = gameText.getGameText();
     }
 
-//    public void printGameBannerConsole() {
-//        System.out.println(Colors.GREEN + GAME_TEXT.get("Banner") + Colors.RESET);
-//    }
-
-    public String printGameBanner() {
-       return GAME_TEXT.get("Banner");
-    }
-
     public String printStory() {
         return GAME_TEXT.get("Intro");
     }
 
-    public void printHelpCommands() {
-        System.out.println(GAME_TEXT.get("Help"));
-    }
-
-    public String printInstructions() {
-        return GAME_TEXT.get("Instructions");
-    }
-
     public String printStoryIntro() {
         return GAME_TEXT.get("StoryIntro");
-    }
-
-    public void printNamePrompt() {
-        System.out.print(GAME_TEXT.get("NamePrompt"));
-    }
-
-    public String printStartGamePrompt() {
-        return GAME_TEXT.get("StartGamePrompt");
-    }
-
-    public void printStatusBanner(String location, String stamina, String inventory,
-        String locationDesc,
-        String locationItems, String message) {
-        System.out.printf(GAME_TEXT.get("Status"), location, stamina, inventory, locationDesc,
-            locationItems,
-            message);
     }
 
     //------------VIEW MESSAGES------------------------------------------
@@ -95,10 +63,6 @@ public class View {
         return GAME_TEXT.get("ItemNotCraftable");
     }
 
-    public String getItemNotEdible() {
-        return GAME_TEXT.get("YouCantEatThat");
-    }
-
     public String getSleeping() {
         return GAME_TEXT.get("Sleep");
     }
@@ -127,20 +91,12 @@ public class View {
         return GAME_TEXT.get("YouCantEatThat");
     }
 
-    public String printCantLoadGame() {
-        return GAME_TEXT.get("NoSavedGame");
-    }
-
     public String getNoStaminaToMove() {
         return GAME_TEXT.get("CantMove");
     }
 
     public String getCantEscape() {
         return GAME_TEXT.get("CantEscape");
-    }
-
-    public String getYouWonMessage() {
-        return GAME_TEXT.get("Win");
     }
 
     public String solvedPuzzleMessage() {
@@ -151,7 +107,6 @@ public class View {
 
         return GAME_TEXT.get("UnSolvedPuzzle");
     }
-
     public String puzzleMessagePrompt() {
         return GAME_TEXT.get("PuzzlePrompt");
     }
@@ -159,14 +114,4 @@ public class View {
     public String pitFallPrompt() {
         return GAME_TEXT.get("PitFall");
     }
-
-    public String pitFallEscapePrompt() {
-        return GAME_TEXT.get("PitFallEscape");
-    }
-
-//    public void clearConsole() {
-//        System.out.print("\033[H\033[2J");
-//        System.out.flush();
-//    }
-
 }

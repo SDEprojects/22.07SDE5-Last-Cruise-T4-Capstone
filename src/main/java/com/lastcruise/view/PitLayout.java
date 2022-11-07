@@ -30,10 +30,6 @@ public class PitLayout {
     }
   };
 
-  // Temporary Fields for testing
-  private JFrame frame = new JFrame();
-  private static View view = new View();
-
   public PitLayout() {
     JPanel primary = primaryPanel;
     primary.setBackground(Color.BLACK);
@@ -48,14 +44,7 @@ public class PitLayout {
     userInput.setFont(new Font("SansSerif", Font.BOLD, 20));
     userInput.setBackground(Color.GRAY);
     userInput.setForeground(Color.WHITE);
-//    userInput.setBorder(BorderFactory.createLineBorder(Color.white));
     submitButton.addActionListener(submit);
-
-//    // Temporary Test Frame
-//    frame.setSize(1500, 800);
-//    frame.add(primary);
-//    frame.setVisible(true);
-//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   // getter to set the text in text Area
@@ -81,10 +70,6 @@ public class PitLayout {
     return primaryPanel;
   }
 
-  public Consumer<String> getActionCallback() {
-    return actionCallback;
-  }
-
   public void setActionCallback(Consumer<String> actionCallback) {
     this.actionCallback = actionCallback;
   }
@@ -97,8 +82,4 @@ public class PitLayout {
     return submit;
   }
 
-  public static void main(String[] args) {
-    PitLayout layout = new PitLayout();
-    layout.changePuzzleTextArea(view.puzzleMessagePrompt());
-  }
 }

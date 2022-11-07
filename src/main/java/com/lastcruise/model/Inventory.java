@@ -28,8 +28,6 @@ public class Inventory {
 
   }
 
-
-
   public Map<String, Item> getInventory() {
     return inventory;
   }

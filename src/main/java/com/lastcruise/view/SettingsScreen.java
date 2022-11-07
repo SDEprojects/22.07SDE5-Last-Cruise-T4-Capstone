@@ -2,13 +2,11 @@ package com.lastcruise.view;
 
 import com.lastcruise.model.Music;
 import com.lastcruise.model.SoundEffect;
-import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class SettingsScreen {
 
@@ -45,22 +43,22 @@ public class SettingsScreen {
     musicUp.addActionListener(e -> Music.increaseMusic());
 
     JLabel soundFxControls = new JLabel("Sound FX Volume:");
-    soundFxControls.setBounds(10,90, 200, 20);
+    soundFxControls.setBounds(10, 100, 200, 20);
 
     JButton fxMute = new JButton("Mute");
-    fxMute.setBounds(10,110,100,30);
+    fxMute.setBounds(10,120,100,30);
     fxMute.addActionListener(e -> SoundEffect.muteSoundFx());
 
     JButton fxUnmute = new JButton("Unmute");
-    fxUnmute.setBounds(110,110,100,30);
+    fxUnmute.setBounds(110,120,100,30);
     fxUnmute.addActionListener(e -> SoundEffect.unMuteSoundFx());
 
     JButton fxDown = new JButton("-");
-    fxDown.setBounds(10,140,100,30);
+    fxDown.setBounds(10,150,100,30);
     fxDown.addActionListener(e -> SoundEffect.decreaseFxVolume());
 
     JButton fxUp = new JButton("+");
-    fxUp.setBounds(110,140,100,30);
+    fxUp.setBounds(110,150,100,30);
     fxUp.addActionListener(e -> SoundEffect.increaseFxVolume());
 
     JButton quit = new JButton("Exit Game");
