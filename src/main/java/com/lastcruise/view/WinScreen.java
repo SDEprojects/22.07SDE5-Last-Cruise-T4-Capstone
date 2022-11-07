@@ -3,12 +3,8 @@ package com.lastcruise.view;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.function.Consumer;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -23,6 +19,7 @@ public class WinScreen {
   private JRadioButton noPLay;
   private JLabel photoLabel;
   ActionListener endGame = e -> System.exit(0);
+  private ClassLoader loader = getClass().getClassLoader();
 
 
   public WinScreen() {
@@ -37,7 +34,7 @@ public class WinScreen {
     // PHOTO LABEL STLYING
     JLabel photoLb = photoLabel;
     // BACKGROUND PHOTO
-    ImageIcon photo1 = new ImageIcon(getClass().getClassLoader().getResource("images/homescreen.jpg"));
+    ImageIcon photo1 = new ImageIcon(loader.getResource("images/homescreen.jpg"));
     Image image = photo1.getImage();
     Image newPhoto = image.getScaledInstance(900, 400, Image.SCALE_SMOOTH);
     photo1 = new ImageIcon(newPhoto);
@@ -52,18 +49,12 @@ public class WinScreen {
     // PLAY AGAIN BANNER STYLING & RADIO BUTTONS
     playAgainBanner.setForeground(Color.WHITE);
     playAgainBanner.setFont(new Font("Serif", Font.BOLD, 25));
-    yesPlay.setForeground(Color.WHITE);
-    noPLay.setForeground(Color.WHITE);
-    noPLay.setMargin(new Insets(20, 20, 20, 20));
+    yesPlay.setForeground(Color.BLACK);
+    noPLay.setForeground(Color.BLACK);
+
     // MAYBE ADD TIMER AND GOODBYE MESSAGE
     noPLay.addActionListener(endGame);
 
-    // TEMPORARY FRAME FOR TESTING
-//    JFrame frame = new JFrame();
-//    frame.setSize(1500, 800);
-//    frame.add(primary);
-//    frame.setVisible(true);
-//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   public JPanel getPrimaryPanel() {

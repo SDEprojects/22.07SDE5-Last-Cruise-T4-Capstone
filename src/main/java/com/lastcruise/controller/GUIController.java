@@ -7,8 +7,6 @@ import com.lastcruise.model.Game;
 import com.lastcruise.model.GameMap.InvalidLocationException;
 import com.lastcruise.model.Inventory.InventoryEmptyException;
 import com.lastcruise.model.Music;
-import com.lastcruise.model.Item;
-import com.lastcruise.model.Player;
 import com.lastcruise.model.Player.ItemNotEdibleException;
 import com.lastcruise.model.Player.NoEnoughStaminaException;
 import com.lastcruise.model.PuzzleClient;
@@ -19,25 +17,16 @@ import com.lastcruise.view.PreludeScreen;
 import com.lastcruise.view.TitleScreen;
 import com.lastcruise.view.View;
 import com.lastcruise.view.WinScreen;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -103,7 +92,31 @@ public class GUIController {
         throw new RuntimeException(ex);
       }
     });
+    titleScreen.getLoadBtn().addActionListener(e -> {
+      try {
+        loadSavedGame();
+        mainFrame.revalidate();
+        mainFrame.repaint();
+        updateView();
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
+
+    });
   }
+private void loadSavedGame () throws IOException {
+    game = gameLoader.loadGame();
+  titleScreen.getTitleScreen().setVisible(false);
+  JPanel gamePanel = mainGameScreen.getMainGamePanel();
+  // loads up game panel
+  mainFrame.add(gamePanel);
+  mainFrame.pack();
+  mainFrame.setVisible(true);
+
+
+}
+
+
 
   private void continueToGame() {
     titleScreen.getTitleScreen().setVisible(false);
@@ -150,8 +163,8 @@ public class GUIController {
     String locationItems = game.getCurrentLocationItems().keySet().toString();
 
     // update GUI View with current location and Stamina
-    mainGameScreen.getLocationLabel().setText("Current Location:\n" + location);
-    mainGameScreen.getStaminaLabel().setText("Stamina:\n" + stamina);
+    mainGameScreen.getLocationLabel().setText("Current Location:\n " + location);
+    mainGameScreen.getStaminaLabel().setText("Stamina:\n " + stamina);
     mainGameScreen.getDialogueTextArea().setText(locationDesc);
 
     // Updates GameScreen Location image

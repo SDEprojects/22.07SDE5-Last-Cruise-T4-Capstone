@@ -11,10 +11,10 @@ public class Main {
 
   public static void main(String[] args) throws IOException, InterruptedException {
 
-    GUIController gui = new GUIController();
+    new GUIController();
 
     URL backgroundMusic = Main.class.getResource(AllSounds.ALL_SOUNDS.get("main"));
     Music.runAudio(backgroundMusic);
-
+    Music.decreaseMusic();
   }
 }
