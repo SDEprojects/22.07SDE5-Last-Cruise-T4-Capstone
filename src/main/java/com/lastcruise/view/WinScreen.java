@@ -24,7 +24,6 @@ public class WinScreen {
 
   public WinScreen() {
     JPanel primary = primaryPanel;
-    primary.setSize(1500, 800);
     primaryPanel.setBackground(new Color(29, 110, 20));
 
     // CONTENT PANE STYLING

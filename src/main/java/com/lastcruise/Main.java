@@ -11,7 +11,7 @@ public class Main {
 
   public static void main(String[] args) throws IOException, InterruptedException {
 
-    new GUIController();
+    GUIController gui = new GUIController();
 
     URL backgroundMusic = Main.class.getResource(AllSounds.ALL_SOUNDS.get("main"));
     Music.runAudio(backgroundMusic);
