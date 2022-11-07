@@ -104,18 +104,16 @@ public class GUIController {
 
     });
   }
-private void loadSavedGame () throws IOException {
+
+  private void loadSavedGame() throws IOException {
     game = gameLoader.loadGame();
-  titleScreen.getTitleScreen().setVisible(false);
-  JPanel gamePanel = mainGameScreen.getMainGamePanel();
-  // loads up game panel
-  mainFrame.add(gamePanel);
-  mainFrame.pack();
-  mainFrame.setVisible(true);
-
-
-}
-
+    titleScreen.getTitleScreen().setVisible(false);
+    JPanel gamePanel = mainGameScreen.getMainGamePanel();
+    // loads up game panel
+    mainFrame.add(gamePanel);
+    mainFrame.pack();
+    mainFrame.setVisible(true);
+  }
 
 
   private void continueToGame() {
@@ -177,7 +175,8 @@ private void loadSavedGame () throws IOException {
 
   public void updateLocationImg(String location) {
     if (!location.equalsIgnoreCase("pit")) {
-      ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("images/" + location +".jpg"));
+      ImageIcon icon = new ImageIcon(
+          getClass().getClassLoader().getResource("images/" + location + ".jpg"));
       Image image = icon.getImage();
       Image resizeImg = image.getScaledInstance(1150, 455, Image.SCALE_SMOOTH);
       icon = new ImageIcon(resizeImg);
@@ -254,6 +253,7 @@ private void loadSavedGame () throws IOException {
                       JTextArea itemDesc = new JTextArea();
                       itemDesc.setText("Item Description: \n" + desc);
                       itemDesc.setLineWrap(true);
+                      itemDesc.setWrapStyleWord(true);
                       itemDesc.setEditable(false);
                       itemDesc.setBounds(10, 10, 280, 100);
                       jd.add(itemDesc);
@@ -331,7 +331,8 @@ private void loadSavedGame () throws IOException {
           mainGameScreen.getItemsPanel().repaint();
         });
       }
-    }}
+    }
+  }
 
   public void processCommand(String[] command) throws InterruptedException {
     Commands c = Commands.valueOf(command[0].toUpperCase());
@@ -362,7 +363,8 @@ private void loadSavedGame () throws IOException {
             ActionListener pitfall = new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-                pitScreen.appendToPuzzleTextArea("\n\n\nYou are going to sleep for a thousand years. Beginning...");
+                pitScreen.appendToPuzzleTextArea(
+                    "\n\n\nYou are going to sleep for a thousand years. Beginning...");
                 pitScreen.appendToPuzzleTextArea("\n\nPlease wait 15 seconds.");
                 pitScreen.getSubmitButton().removeActionListener(pitScreen.getSubmit());
               }
@@ -383,29 +385,29 @@ private void loadSavedGame () throws IOException {
               }
             };
             pitScreen.setActionCallback((playerAnswer) -> {
-                Boolean answer = puzzleClient.checkPuzzleAnswer(playerAnswer);
-                if (answer) {
-                  pitScreen.appendToPuzzleTextArea(view.solvedPuzzleMessage());
-                  Timer timer = new Timer(3000, leavePit);
-                  timer.setRepeats(false);
-                  timer.start();
-                } else {
-                  pitScreen.appendToPuzzleTextArea(view.unSolvedPuzzleMessage());
-                  pitScreen.getSubmitButton().removeActionListener(pitScreen.getSubmit());
-                  try {
-                    puzzleClient.puzzlePunishmentSound();
-                  } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                  }
-                  // Wait three seconds and tell player they were wrong
-                  Timer timer = new Timer(3000, pitfall);
-                  timer.setRepeats(false);
-                  timer.start();
-                  // Wait 15 seconds before continue with game
-                  timer = new Timer(15000, leavePit);
-                  timer.setRepeats(false);
-                  timer.start();
+              Boolean answer = puzzleClient.checkPuzzleAnswer(playerAnswer);
+              if (answer) {
+                pitScreen.appendToPuzzleTextArea(view.solvedPuzzleMessage());
+                Timer timer = new Timer(3000, leavePit);
+                timer.setRepeats(false);
+                timer.start();
+              } else {
+                pitScreen.appendToPuzzleTextArea(view.unSolvedPuzzleMessage());
+                pitScreen.getSubmitButton().removeActionListener(pitScreen.getSubmit());
+                try {
+                  puzzleClient.puzzlePunishmentSound();
+                } catch (InterruptedException e) {
+                  throw new RuntimeException(e);
                 }
+                // Wait three seconds and tell player they were wrong
+                Timer timer = new Timer(3000, pitfall);
+                timer.setRepeats(false);
+                timer.start();
+                // Wait 15 seconds before continue with game
+                timer = new Timer(15000, leavePit);
+                timer.setRepeats(false);
+                timer.start();
+              }
             });
           } else {
             URL runSoundUrl = getClass().getResource(
@@ -416,8 +418,7 @@ private void loadSavedGame () throws IOException {
         } catch (InvalidLocationException e) {
           message = view.getInvalidLocationMessage();
 
-        }
-        catch (NoEnoughStaminaException e) {
+        } catch (NoEnoughStaminaException e) {
           message = view.getNoStaminaToMove();
 
         }
