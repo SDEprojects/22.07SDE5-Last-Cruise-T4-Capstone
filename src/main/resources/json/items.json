@@ -1,56 +1,56 @@
 [
   {
     "name": "log",
-    "description": "a long piece of wood. You need something sharp to cut it down",
+    "description": "A long piece of wood. You need something sharp  to cut it down.",
     "required": ["machete"]
   },
   {
     "name": "rope",
-    "description": "a sturdy rope hanging from a tree"
+    "description": "A sturdy rope hanging from a tree."
   },
   {
     "name": "machete",
-    "description": "sharp metal machete that can be used to cut items"
+    "description": "Sharp metal machete that can be used to cut items."
   },
   {
     "name": "paddle",
-    "description": "an old brown paddle floating in the lake. It is still in good condition"
+    "description": "An old brown paddle floating in the lake. It is still in good condition."
   },
   {
     "name": "cloth",
-    "description": "old dirty cloth caught in between two rocks"
+    "description": "Old dirty cloth caught in between two rocks."
   },
   {
     "name": "rocks",
-    "description": "a pile of slippery rocks"
+    "description": "A pile of slippery rocks."
   },
   {
     "name": "steelpipe",
-    "description": "a steel pipe that may have been used as mining tool"
+    "description": "A steel pipe that may have been used as mining tool."
   },
   {
     "name": "raft",
-    "description": "raft description",
+    "description": "A gorgeous hand-made work of art.",
     "required": ["log","cloth","rope","steelpipe","paddle"]
   },
   {
     "name": "berries",
-    "description": "juicy blueberries. They look edible",
+    "description": "Juicy blueberries. They look edible.",
     "edible": true
   },
   {
     "name": "banana",
-    "description": "ripe banana",
+    "description": "Ripe banana.",
     "edible": true
   },
   {
     "name": "mushroom",
-    "description": "strange mushroom growing out of the cement",
+    "description": "Strange mushroom growing out of the cement.",
     "edible": true
   },
   {
     "name": "fish",
-    "description": "an edible fish",
+    "description": "An edible fish.",
     "edible": true
   }
 ]
